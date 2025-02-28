@@ -265,6 +265,8 @@ PARAMETER num_ctx 43008
 
 This maxes out my 36GB of VRAM almost entirely, and gives me the joy for a few simple tasks.
 
+![nvtop](media/nvtop.png)
+
 I use the deepmeepbeep's YeEGP repo for testing, as I still have it lingering around from an earlier experiment: https://github.com/deepbeepmeep
 
 And I run Roo Code over it using the following prompt for the coding role:
