@@ -1,0 +1,17 @@
+#FROM hf.co/benhaotang/Rombos-Coder-V2.5-Qwen-7b-GGUF_cline
+FROM hf.co/bartowski/Rombos-Coder-V2.5-Qwen-7b-GGUF:F16
+
+# Note: llm_load_print_meta: n_ctx_train      = 32768
+
+# Making the context larger than that may lead to:
+#  - Struggle with long-range dependencies.
+#  - Produce hallucinations or incoherent text in later tokens.
+#  - Fail to recall early-context information correctly.
+# It’s best to stay within 1.5–2x of the original training context unless you know the model supports extrapolation.
+
+PARAMETER num_ctx 32768
+#PARAMETER num_ctx 57344
+#PARAMETER num_ctx 65536
+#PARAMETER num_ctx 100000
+#PARAMETER num_ctx 131072
+

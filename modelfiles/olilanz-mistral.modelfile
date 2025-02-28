@@ -1,0 +1,17 @@
+
+# llama_model_loader: - kv  15:                       llama.context_length u32              = 32768
+
+# FROM hf.co/lmstudio-community/Mistral-Small-24B-Instruct-2501-GGUF:Q8_0
+# 31 GB VRAM at 16k context size
+# PARAMETER num_ctx 16384
+
+FROM hf.co/lmstudio-community/Mistral-Small-24B-Instruct-2501-GGUF:Q6_K
+PARAMETER num_ctx 32768
+
+
+# 12B model
+# FROM hf.co/lmstudio-community/Mistral-Nemo-Instruct-2407-GGUF:Q8_0
+
+#PARAMETER num_ctx 57344
+#PARAMETER num_ctx 65536
+
