@@ -6,7 +6,10 @@ Roo Code is boosting developer productivity by leveraging cloud-hosted LLMs (Lar
 
 Here is a recording of 2 real world refactoring tasks with Roo Code against OpenAI GPT-4o (with deliberately loose instructions). Quite cool:
 
-[![Refactoring in Roo Code using OpenAI GPT-4o](media/roo-openai.mp4)](media/roo-openai.mp4)
+<video width="600" controls>
+  <source src="media/roo-openai.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 However, with cloud hosted backends comes a steep cost, as you pay per token. And in complex refactoring, you quickly end up with millions of tokens used. This takes the fun out of it quite a bit, e.g. for recreational coding projects. Luckily, with Roo Code you can choose the backend, and also run against locally hosted LLMs using Ollama. This can potentially save you tons of money, if you choose to run it on capable consumer hardware, like your son's gaming PC while he is sweating in school. 
 
@@ -14,7 +17,7 @@ But how well does it work? Why is not everybody doing it this way? As I was look
 
 GusoCoder published an encouraging video a few weeks ago, which triggered me to give it a spin only own hardware. I wanted to understand what was going wrong, and what we potentially could do to fix it. 
 
-[![Roo-Cline Tested with Local LLM's](https://www.youtube.com/watch?v=7sgSBLIb0ho)](https://www.youtube.com/watch?v=7sgSBLIb0ho)
+<iframe width="600" height="400" src="https://www.youtube.com/embed/7sgSBLIb0ho" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 So, I threw myself at it, and described my experiences here, in the hope to inspire someone else to also share their experiences - or at least to save someone else's time trying to get their heads around it. 
 
@@ -244,11 +247,11 @@ llama_new_context_with_model: n_ctx_per_seq (43008) < n_ctx_train (1010000) -- t
 
 For this investigation, I rely on pre-owned hardware components collected over the years. It's not the most modern setup, but beefy enough for the task, and still representative for a high-end consumer PC. My configuration includes a previous-gen AMD Ryzen 7 CPU, 128GB DDR4 RAM, 2TB NVMe storage, and an RTX 3090 TI on 16xPCIe4. I threw in an additional RTX 3060 on 4xPCIe4, giving me a total of 36GB of VRAM to work with.
 
-![wqweqwe](media/hardware.png)
+<img src="media/hardware.png" alt="hardware" width="800" height="600">
 
 For software, I use Unraid OS because it's lightweight and provides painless support for containerization and virtualization with GPU passthrough. Initially, I ran Windows and Ubuntu on Unraid using QEMU for exploring Ollama, llama.cpp, Pinokio, LocalAI. 
 
-![wqweqwe](media/unraid.png)
+<img src="media/unraid.png" alt="unraid" width="800" height="600">
 
 But as I settled on the Ollama idea, I ditched the VMs and run everything in containers on Unraid. This keeps it lightweight and makes it all repeatable on other free platforms like Docker Compose or Kubernetes. It also saves me a bit of valuable VRAM as Unraid doesn't have a desktop environment with GPU support.
 
@@ -265,7 +268,7 @@ PARAMETER num_ctx 43008
 
 This maxes out my 36GB of VRAM almost entirely, and gives me the joy for a few simple tasks.
 
-![nvtop](media/nvtop.png)
+<img src="media/nvtop.png" alt="nvtop" width="800" height="600">
 
 I use the deepmeepbeep's YeEGP repo for testing, as I still have it lingering around from an earlier experiment: https://github.com/deepbeepmeep
 
