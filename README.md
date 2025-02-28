@@ -6,10 +6,7 @@ Roo Code is boosting developer productivity by leveraging cloud-hosted LLMs (Lar
 
 Here is a recording of 2 real world refactoring tasks with Roo Code against OpenAI GPT-4o (with deliberately loose instructions). Quite cool:
 
-<video width="600" controls>
-  <source src="media/roo-openai.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[![Watch the video](media/roo-openai.png)](media/roo-openai.mp4)
 
 However, with cloud hosted backends comes a steep cost, as you pay per token. And in complex refactoring, you quickly end up with millions of tokens used. This takes the fun out of it quite a bit, e.g. for recreational coding projects. Luckily, with Roo Code you can choose the backend, and also run against locally hosted LLMs using Ollama. This can potentially save you tons of money, if you choose to run it on capable consumer hardware, like your son's gaming PC while he is sweating in school. 
 
@@ -17,7 +14,7 @@ But how well does it work? Why is not everybody doing it this way? As I was look
 
 GusoCoder published an encouraging video a few weeks ago, which triggered me to give it a spin only own hardware. I wanted to understand what was going wrong, and what we potentially could do to fix it. 
 
-<iframe width="600" height="400" src="https://www.youtube.com/embed/7sgSBLIb0ho" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Watch the YouTube video](media/local-llm.png)](https://www.youtube.com/watch?v=7sgSBLIb0ho)
 
 So, I threw myself at it, and described my experiences here, in the hope to inspire someone else to also share their experiences - or at least to save someone else's time trying to get their heads around it. 
 
