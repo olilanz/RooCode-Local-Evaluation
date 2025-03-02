@@ -4,35 +4,33 @@
 
 Roo Code boosts developer productivity by leveraging cloud-hosted LLMs (Large Language Models). Cloud-hosted LLMs like Claude 3.7 Sonnet and OpenAI's GPT-4o demonstrate remarkable context awareness and the ability to solve complex coding tasks.
 
-Here is a recording of 2 real world refactoring tasks with Roo Code against OpenAI GPT-4o (with deliberately loose instructions). Quite cool:
+Here is a recording of two real-world refactoring tasks with Roo Code against OpenAI GPT-4o (with deliberately loose instructions). Quite cool:
 
 [![Watch the video](media/roo-openai.png)](media/roo-openai.mp4)
 
-However, with cloud hosted backends comes a steep cost, as you pay per token. And in complex refactoring, you quickly end up with millions of tokens used. This takes the fun out of it quite a bit, e.g. for recreational coding projects. 
+However, with cloud-hosted backends comes a steep cost, as you pay per token. In complex refactoring, you quickly end up with millions of tokens used. This takes the fun out of it quite a bit, e.g., for recreational coding projects.
 
-Luckily, with Roo Code you can choose the backend, and also run against locally hosted LLMs using Ollama. This can save you tons of money, if you choose to run it on capable consumer hardware - like your son's gaming PC while he is sweating in school (not that I would ever do that 🫣). 
+Luckily, with Roo Code, you can choose the backend and also run against locally hosted LLMs using Ollama. This can save you tons of money if you choose to run it on capable consumer hardware—like your son's gaming PC while he is sweating in school (not that I would ever do that 🫣).
 
-But how well does it work? Why is not everybody doing it this way? As I was looking for answers on the internet, I found a lot of information about problems, but not much useful guidance for how to overcome them. 
+But how well does it work? Why is not everybody doing it this way? As I was looking for answers on the internet, I found a lot of information about problems but not much useful guidance for how to overcome them.
 
-GusoCoder published an encouraging video a few weeks ago, which triggered me to give it a spin only own hardware. I wanted to understand what was going wrong, and what we potentially could do to fix it. 
+GusoCoder published an encouraging video a few weeks ago, which triggered me to give it a spin on my own hardware. I wanted to understand what was going wrong and what we potentially could do to fix it.
 
 [![Watch the YouTube video](media/local-llm.png)](https://www.youtube.com/watch?v=7sgSBLIb0ho)
 
-In this article I describe my experiences, in the hope to inspire someone else to also share their experiences - or at least to save someone time trying to get their heads around it. 
-
+In this article, I describe my experiences in the hope of inspiring someone else to also share their experiences—or at least to save someone time trying to get their heads around it.
 
 ### For the impatient
 
-Yes, it works! But you need to keep your ambitions a bit lower, as the local setup cannot compete with the cloud hosted model in speed and quality. Though, if are willing to put in the time to tune and optimize your setup, you can achieve good results.
+Yes, it works! But you need to keep your ambitions a bit lower, as the local setup cannot compete with the cloud-hosted model in speed and quality. Though, if you are willing to put in the time to tune and optimize your setup, you can achieve good results.
 
-Plus... there is an option to choose a hybrid approach, such as hosting Ollama yourself on services like runpod.io, whch provde good hourly rates powerful GPUs. This lets you go absolutely crazy for a few hours without worrying about cost every time you press a button.
-
+Plus... there is an option to choose a hybrid approach, such as hosting Ollama yourself on services like runpod.io, which provide good hourly rates for powerful GPUs. This lets you go absolutely crazy for a few hours without worrying about cost every time you press a button.
 
 ### Landscape in February 2025
 
-Nearly every week brings new, groundbreaking innovations to the public AI space. The AI models that were turning the world upside down last week are replaced by even more capable models the week after — sometimes even for free. Models like GPT-4o, Deepseek R1, Grok, Mercury, and others continue to emerge. In this rapidly changing environment, it seems super hard to stay on top of the latest developments.
+Nearly every week brings new, groundbreaking innovations to the public AI space. The AI models that were turning the world upside down last week are replaced by even more capable models the week after—sometimes even for free. Models like GPT-4o, Deepseek R1, Grok, Mercury, and others continue to emerge. In this rapidly changing environment, it seems super hard to stay on top of the latest developments.
 
-While ever higher intelligence is fascinating, it is hardly useful for the masses if it cannot be applied in practical fields. Unless we reliably solve the applicability problem, AI will remain a fascinating dream rather than a reality for most of us.
+While ever-higher intelligence is fascinating, it is hardly useful for the masses if it cannot be applied in practical fields. Unless we reliably solve the applicability problem, AI will remain a fascinating dream rather than a reality for most of us.
 
 The world is recognizing that no single LLM can solve everything. Instead, smaller, specialized models are emerging, each trained for specific tasks and orchestrated to handle complex or tedious work efficiently. Industry protocols like MCP enable interoperability within a broader AI ecosystem.
 
@@ -40,24 +38,23 @@ This approach offers key advantages: smaller models are easier and more cost-eff
 
 It seems that we are at a turning point towards decentralization and democratization of AI. Something that will definitely help the broader adoption into real-world tasks.
 
-
 ### Auto-coders and Coding Assistants
 
-The software engineering discipline fits very well the description of such specific area with real world tasks. In this field, we see several promising products emerging, such as Copilot, Windrurf, Continue, or Roo Code (formerly Roo Cline), making use of Large Language Models (LLMs).
+The software engineering discipline fits very well the description of such a specific area with real-world tasks. In this field, we see several promising products emerging, such as Copilot, Windrurf, Continue, or Roo Code (formerly Roo Cline), making use of Large Language Models (LLMs).
 
-One one hand, there are coding assistants like Copilot, which act more like chat interfaces and provide capable auto-completion, are rapidly becoming common in a software engineer's toolbox for accelerated code analysis, development, review, and debugging.
+On one hand, there are coding assistants like Copilot, which act more like chat interfaces and provide capable auto-completion. These are rapidly becoming common in a software engineer's toolbox for accelerated code analysis, development, review, and debugging.
 
-The category of autocoders on the other hand, can autonomously complete coding tasks. The engineer formulates a specific task for the autocoder, who then executes the task and provides the completed changes for refinement and approval. Auto-coding requires much stronger context awareness and higher precision of the LLM, so that a coding task can be carried out to completion.
+The category of autocoders, on the other hand, can autonomously complete coding tasks. The engineer formulates a specific task for the autocoder, which then executes the task and provides the completed changes for refinement and approval. Auto-coding requires much stronger context awareness and higher precision of the model so that a coding task can be carried out to completion.
 
 ```mermaid
 %%{ init: { 'theme': 'base', 'themeVariables': { 'primaryColor': '#f0f0f0', 'edgeLabelBackground':'#ffffff', 'fontSize':'14px' } } }%%
 flowchart TD
     subgraph "AI Coding Assistants"
-        A[Coding Assistants] -->|Depend on| B(Small, Fast LLMs)
+        A[Coding Assistants] -->|Depend on| B(Small, Fast Models)
     end
     
     subgraph "AI Auto-Coders"
-        C[Auto-Coders] -->|Depend on| D(Large, Powerful LLMs)
+        C[Auto-Coders] -->|Depend on| D(Large, Powerful Models)
     end
     
     style A fill:#007acc,stroke:#000,color:#fff
@@ -68,15 +65,15 @@ flowchart TD
 
 More often than not, software engineers work with existing codebases where years of thought have gone into producing the desired outcome concerning functionality, performance, security, robustness, or maintainability. To autonomously complete a refactoring task satisfactorily, the autocoder needs to infer from existing code the structure, intent, and quality aspects before coming up with a reasonable plan for making changes.
 
-Doing this well reuires the build-up of lare context for achieving the desired result. Autocoders must manage this context, and help the LLM to iteratively refine the understanding, call tools for knowledge acquisition, and apply changes to the actual codebase. This more involved workflow is what sets autocoders apart from simple coding assistants. 
+Doing this well requires the build-up of large context for achieving the desired result. Autocoders must manage this context and help the model to iteratively refine the understanding, call tools for knowledge acquisition, and apply changes to the actual codebase. This more involved workflow is what sets autocoders apart from simple coding assistants.
 
 ### Appreciation for Roo Code
 
 Roo Code is well-established in the community as a super accessible autocoder that integrates seamlessly into VSCode workflows, such as applying code changes, executing commands directly in the VSCode terminal, integrating with source control, working with diffs, etc.
 
-It can be configured to use local LLMs using Ollama and is open-source, allowing us to explore why something works or doesn't and fix it if necessary. 
+It can be configured to use local models using Ollama and is open-source, allowing us to explore why something works or doesn't and fix it if necessary.
 
-What stands out to me most is that Roo Code supports different modes — e.g., for coding, as an architect, for asking questions to build understanding. Choosing a mode affects Roo Code's behavior, making it feel like you're working with a colleague specializing in a particular area. You can ask for understanding, get architectural considerations, and have the coder implement changes to perfection.
+What stands out to me most is that Roo Code supports different modes—e.g., for coding, as an architect, for asking questions to build understanding. Choosing a mode affects Roo Code's behavior, making it feel like you're working with a colleague specializing in a particular area. You can ask for understanding, get architectural considerations, and have the coder implement changes to perfection.
 
 ```mermaid
 graph TD;
@@ -85,11 +82,11 @@ graph TD;
     A -->|Debugging & fixing| D[Debug Mode];
     A -->|Discuss & understand| E[Ask Mode];
     A -->|User-defined behavior| F[Custom Modes];
-
+    
     F -->|Example: Generate documentation| G[DocGen Mode];
 ```
 
-While default modes do a good job, you can also create your own — e.g., as a helpful reviewer or tech writer — and specialize them further to focus on specific quality aspects like robustness, performance, or security — important for real-world tasks. 
+While default modes do a good job, you can also create your own—e.g., as a helpful reviewer or tech writer—and specialize them further to focus on specific quality aspects like robustness, performance, or security—important for real-world tasks.
 
 Moreover, Roo Code has an active community with frequent discussions on Discord and regular releases, lowering the time needed between ideation and release of new versions.
 
