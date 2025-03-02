@@ -1,14 +1,16 @@
-# Roo Code - Autocoder and local LLMs
+# Roo Code - A massive productivity boost
 
 ## Motivation
 
-Roo Code is boosting developer productivity by leveraging cloud-hosted LLMs (Large Language Models). Cloud-hosted LLMs like Claude Sonnet 3.7 open GPT-4o are showing amazing results with their context awareness and ability to solve complex coding tasks.
+Roo Code boosts developer productivity by leveraging cloud-hosted LLMs (Large Language Models). Cloud-hosted LLMs like Claude 3.7 Sonnet and OpenAI's GPT-4o demonstrate remarkable context awareness and the ability to solve complex coding tasks.
 
 Here is a recording of 2 real world refactoring tasks with Roo Code against OpenAI GPT-4o (with deliberately loose instructions). Quite cool:
 
 [![Watch the video](media/roo-openai.png)](media/roo-openai.mp4)
 
-However, with cloud hosted backends comes a steep cost, as you pay per token. And in complex refactoring, you quickly end up with millions of tokens used. This takes the fun out of it quite a bit, e.g. for recreational coding projects. Luckily, with Roo Code you can choose the backend, and also run against locally hosted LLMs using Ollama. This can potentially save you tons of money, if you choose to run it on capable consumer hardware, like your son's gaming PC while he is sweating in school. 
+However, with cloud hosted backends comes a steep cost, as you pay per token. And in complex refactoring, you quickly end up with millions of tokens used. This takes the fun out of it quite a bit, e.g. for recreational coding projects. 
+
+Luckily, with Roo Code you can choose the backend, and also run against locally hosted LLMs using Ollama. This can save you tons of money, if you choose to run it on capable consumer hardware - like your son's gaming PC while he is sweating in school (not that I would ever do that 🫣). 
 
 But how well does it work? Why is not everybody doing it this way? As I was looking for answers on the internet, I found a lot of information about problems, but not much useful guidance for how to overcome them. 
 
@@ -16,18 +18,14 @@ GusoCoder published an encouraging video a few weeks ago, which triggered me to 
 
 [![Watch the YouTube video](media/local-llm.png)](https://www.youtube.com/watch?v=7sgSBLIb0ho)
 
-So, I threw myself at it, and described my experiences here, in the hope to inspire someone else to also share their experiences - or at least to save someone else's time trying to get their heads around it. 
+In this article I describe my experiences, in the hope to inspire someone else to also share their experiences - or at least to save someone time trying to get their heads around it. 
 
 
 ### For the impatient
 
-Yes, it works! But you need to keep your ambitions a bit lower. The local setup cannot compete with the cloud hosted model in speed and quality. Though, if you reduce your ambitions, and are willing to put in the time, you can definitely make it work.
+Yes, it works! But you need to keep your ambitions a bit lower. The local setup cannot compete with the cloud hosted model in speed and quality. Though, if you reduce your ambitions, and are willing to put in the time to optimize your setup, you can achieve good results.
 
-Plus... there is an option to choose a hybrid approach, such as hosting Ollama yourself on services like runpod.io, whch provde good hourly rates powerful GPUs. This lets you go absolutely crazy for a few hours without worrying about cost every single time you press a button.
-
-In my case, I am not getting the same results as GusoCoder in the video linked above. But that is probably because of differences in our setup, and differences of the tasks we are giving to for Roo Code to complete.
-
-This suggests that you will have to see for your self if you will find a useful configuration on the hardware you have available.
+Plus... there is an option to choose a hybrid approach, such as hosting Ollama yourself on services like runpod.io, whch provde good hourly rates powerful GPUs. This lets you go absolutely crazy for a few hours without worrying about cost every time you press a button.
 
 
 ### Landscape in February 2025
