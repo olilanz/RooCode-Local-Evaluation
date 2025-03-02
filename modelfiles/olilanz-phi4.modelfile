@@ -4,15 +4,17 @@
 # llm_load_print_meta: n_ctx_train      = 16384
 # probably also becomes unreliable on large context sizes   
 
-FROM hf.co/unsloth/phi-4-GGUF:Q5_K_M
+#FROM hf.co/unsloth/phi-4-GGUF:Q5_K_M
+FROM hf.co/lmstudio-community/phi-4-GGUF:Q8_0
 
 # 15GB VRAM, at 16k context size
 PARAMETER num_ctx 16384
 
+# ??GB VRAM, at 32k context size
+# PARAMETER num_ctx 32768
+
 # 34GB VRAM, at 56k context size
 # PARAMETER num_ctx 57344
-
-#PARAMETER num_ctx 32768
 
 #PARAMETER num_ctx 32768
 #PARAMETER num_ctx 65536
