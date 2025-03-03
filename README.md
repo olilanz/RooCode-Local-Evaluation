@@ -1,4 +1,4 @@
-# Roo Code - A massive productivity boost
+# Roo Code - A Massive Productivity Boost
 
 ## Motivation
 
@@ -20,7 +20,7 @@ GusoCoder published an encouraging video a few weeks ago, which triggered me to 
 
 In this article, I describe my experiences in the hope of inspiring someone else to also share their experiences—or at least to save someone time trying to get their heads around it.
 
-### For the impatient
+### For the Impatient
 
 Yes, it works! But you need to keep your ambitions a bit lower, as the local setup cannot compete with the cloud-hosted model in speed and quality. Though, if you are willing to put in the time to tune and optimize your setup, you can achieve good results.
 
@@ -38,13 +38,13 @@ This approach offers key advantages: smaller models are easier and more cost-eff
 
 It seems that we are at a turning point towards decentralization and democratization of AI. Something that will definitely help the broader adoption into real-world tasks.
 
-### Auto-coders and Coding Assistants
+### Auto-Coders and Coding Assistants
 
 The software engineering discipline fits very well the description of such a specific area with real-world tasks. In this field, we see several promising products emerging, such as Copilot, Windrurf, Continue, or Roo Code (formerly Roo Cline), making use of Large Language Models (LLMs).
 
 On one hand, there are coding assistants like Copilot, which act more like chat interfaces and provide capable auto-completion. These are rapidly becoming common in a software engineer's toolbox for accelerated code analysis, development, review, and debugging.
 
-The category of autocoders, on the other hand, can autonomously complete coding tasks. The engineer formulates a specific task for the autocoder, which then executes the task and provides the completed changes for refinement and approval. Auto-coding requires much stronger context awareness and higher precision of the model so that a coding task can be carried out to completion.
+The category of auto-coders, on the other hand, can autonomously complete coding tasks. The engineer formulates a specific task for the auto-coder, which then executes the task and provides the completed changes for refinement and approval. Auto-coding requires much stronger context awareness and higher precision of the model so that a coding task can be carried out to completion.
 
 ```mermaid
 %%{ init: { 'theme': 'base', 'themeVariables': { 'primaryColor': '#f0f0f0', 'edgeLabelBackground':'#ffffff', 'fontSize':'14px' } } }%%
@@ -63,13 +63,13 @@ flowchart TD
     style D fill:#90ee90,stroke:#000
 ```
 
-More often than not, software engineers work with existing codebases where years of thought have gone into producing the desired outcome concerning functionality, performance, security, robustness, or maintainability. To autonomously complete a refactoring task satisfactorily, the autocoder needs to infer from existing code the structure, intent, and quality aspects before coming up with a reasonable plan for making changes.
+More often than not, software engineers work with existing codebases where years of thought have gone into producing the desired outcome concerning functionality, performance, security, robustness, or maintainability. To autonomously complete a refactoring task satisfactorily, the auto-coder needs to infer from existing code the structure, intent, and quality aspects before coming up with a reasonable plan for making changes.
 
-Doing this well requires the build-up of large context for achieving the desired result. Autocoders must manage this context and help the model to iteratively refine the understanding, call tools for knowledge acquisition, and apply changes to the actual codebase. This more involved workflow is what sets autocoders apart from simple coding assistants.
+Doing this well requires the build-up of large context for achieving the desired result. Auto-coders must manage this context and help the model to iteratively refine the understanding, call tools for knowledge acquisition, and apply changes to the actual codebase. This more involved workflow is what sets auto-coders apart from simple coding assistants.
 
 ### Appreciation for Roo Code
 
-Roo Code is well-established in the community as a super accessible autocoder that integrates seamlessly into VSCode workflows, such as applying code changes, executing commands directly in the VSCode terminal, integrating with source control, working with diffs, etc.
+Roo Code is well-established in the community as a super accessible auto-coder that integrates seamlessly into VSCode workflows, such as applying code changes, executing commands directly in the VSCode terminal, integrating with source control, working with diffs, etc.
 
 It can be configured to use local models using Ollama and is open-source, allowing us to explore why something works or doesn't and fix it if necessary.
 
@@ -90,36 +90,34 @@ While default modes do a good job, you can also create your own—e.g., as a hel
 
 Moreover, Roo Code has an active community with frequent discussions on Discord and regular releases, lowering the time needed between ideation and release of new versions.
 
-This combination makes Roo Code stand out to me as a versatile tool that I believe can follow my emerging needs, and keep up in the fast changing environment.
+This combination makes Roo Code stand out to me as a versatile tool that I believe can follow my emerging needs and keep up in the fast-changing environment.
 
+## Identifying the Problem
 
-## Identifying the problem
+### Fast, Cheap, and at Top Quality
 
-### Fast, cheap and at top quality
+If you choose to run your LLM on consumer hardware, as opposed to cloud-hosted services, you run into constraints that you will need to balance. If you wouldn't care that a task completes first after 14 hours, you can run the most powerful LLM against your codebase. But if you want a more interactive way of working, you will need to sacrifice model capabilities instead.
 
-If you choose to run your LLM on consumer hardware, as opposed to cloud hosted services, you run into constraints that you will need to balance. If you wouldn't care that a task completes first after 14 hours, you can run the most poeerful LLM against your code base. But if you want a mode interactive way of working, you will need to sacrifice model capabilities instead. 
+As auto-coders rely heavily on context management, everything in this article will revolve somehow around this.
 
-As auto-coders rely heavily on context management, everything in this article will revolve somehow arounf this. 
+But first, let's have a look at how Roo Code works.
 
-But first, let's have a look at how Roo Code works. 
+### So, How Does Roo Code Work?
 
+Debugging VSCode and the Roo Code plugin to understand their inner workings can be daunting due to a lot of code running unrelated to LLM interactions. If you want to explore the inner workings, a better way may be to enable debug logging on Ollama and monitor HTTP traffic between Roo Code and Ollama.
 
-### So, how does Roo Code work?
-
-Debugging VSCode and the Roo Code plugin to understand their inner workings can be daunting due to a lot of code running unrelated to LLM interactions. If you want to explore the inner workings, a better way may be to enable debug logging on Ollama and monitoring HTTP traffic between Roo Code and Ollama.
-
-You will see that LLMs are inherently stateles. They have no access to storage or tools, and every interaction with the LLMs is accompained with complete context of what Roo Code is about to do. Context starts typically out small in the begginning of the task, but grows larger as Roo Code iteratively progresses the work together with the LLM. Solving complex tasks requires many iterations, which leads large context sizes.
+You will see that LLMs are inherently stateless. They have no access to storage or tools, and every interaction with the LLMs is accompanied with complete context of what Roo Code is about to do. Context starts typically out small in the beginning of the task, but grows larger as Roo Code iteratively progresses the work together with the LLM. Solving complex tasks requires many iterations, which leads to large context sizes.
 
 In Roo Code, I see calls to the LLM range from 200kb per call upwards, even if I ask the model to explain a few lines of code. With each iteration, the message grows in size as more information is added.
 
-The message to the LLM, contains everything: 
+The message to the LLM contains everything:
 
 - The system prompt explaining how the model should behave and format responses — including what tools it can request to be called.
-- The user prompt includes your request to the LLM
-- The contents of any referenced files
+- The user prompt includes your request to the LLM.
+- The contents of any referenced files.
 - A history of all previous interactions with the LLM so that it can decide what to do next without repeating itself.
 
-For illustration of the prompts and iterations, the structure of the message to the LLM may looks something like this (shortened version):
+For illustration of the prompts and iterations, the structure of the message to the LLM may look something like this (shortened version):
 
 ```json
 {
@@ -127,24 +125,24 @@ For illustration of the prompts and iterations, the structure of the message to 
     "messages": [
         {
             "role": "system",
-            "content": "You are Roo, a highly skilled software engineer with ...[shotened]"
+            "content": "You are Roo, a highly skilled software engineer with ...[shortened]"
         },
         {
             "role": "user",
             "content": [
                 {
                     "type": "text",
-                    "text": "<task>\nI want you to improve maintainability of  ...[shotened]"
+                    "text": "<task>\nI want you to improve maintainability of  ...[shortened]"
                 },
                 {
                     "type": "text",
-                    "text": "<environment_details>\n# VSCode Visible Files\ ...[shotened]"
+                    "text": "<environment_details>\n# VSCode Visible Files\ ...[shortened]"
                 }
             ]
         },
         {
             "role": "assistant",
-            "content": "<thinking>\nTo improve the maintainability of the Python ...[shotened]"
+            "content": "<thinking>\nTo improve the maintainability of the Python ...[shortened]"
         },
         {
             "role": "user",
@@ -155,17 +153,16 @@ For illustration of the prompts and iterations, the structure of the message to 
                 },
                 {
                     "type": "text",
-                    "text": "The tool execution failed with the following error:\n ...[shotened]"
+                    "text": "The tool execution failed with the following error:\n ...[shortened]"
                 },
                 {
                     "type": "text",
-                    "text": "<environment_details>\n# VSCode Visible Files ...[shotened]"
                 }
             ]
         },
         {
             "role": "assistant",
-            "content": "It seems there was an issue with the file path in the  ...[shotened]"
+            "content": "It seems there was an issue with the file path in the  ...[shortened]"
         },
         {
             "role": "user",
@@ -176,11 +173,11 @@ For illustration of the prompts and iterations, the structure of the message to 
                 },
                 {
                     "type": "text",
-                    "text": "  1 | import os\n  2 | import sys\n  3 | from  ...[shotened]"
+                    "text": "  1 | import os\n  2 | import sys\n  3 | from  ...[shortened]"
                 },
                 {
                     "type": "text",
-                    "text": "<environment_details>\n# VSCode Visible Files ...[shotened]"
+                    "text": "<environment_details>\n# VSCode Visible Files ...[shortened]"
                 }
             ]
         }
@@ -360,7 +357,7 @@ If all that is right, and you still find too much trouble, then it's about the p
 And if you still want more, consider the off-topics - like renting a GPU at runpod.io, or find a second GPU to cramp into your box. While this is not as efficient as having one large GPU with tons of VRAM, it is still a viable, cost effective approach to consider.
 
 
-## Testing the Task
+## Testing in the wild
 
 ### My setup and testing ground
 
