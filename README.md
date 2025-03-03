@@ -69,11 +69,13 @@ Doing this well requires the build-up of large context for achieving the desired
 
 ### Appreciation for Roo Code
 
-Roo Code is well-established in the community as a super accessible auto-coder that integrates seamlessly into VSCode workflows, such as applying code changes, executing commands directly in the VSCode terminal, integrating with source control, working with diffs, etc.
+Roo Code is well-established in the community as a super accessible auto-coder that integrates seamlessly into VSCode workflows, such as applying code changes, executing commands directly in the VSCode terminal, integrating with source control, working with diffs, etc. It can be configured to use local models using Ollama and is open-source, allowing us to explore why something works or doesn't and fix it if necessary.
 
-It can be configured to use local models using Ollama and is open-source, allowing us to explore why something works or doesn't and fix it if necessary.
+The popularity of Roo Code can be seen e.g. on the Open [Router web site](https://openrouter.ai), which shows a ranked list of applications that are used on their platform. Roo Code ranks behind Cline, with a large gap to SillyTavern: 
 
-What stands out to me most is that Roo Code supports different modes—e.g., for coding, as an architect, for asking questions to build understanding. Choosing a mode affects Roo Code's behavior, making it feel like you're working with a colleague specializing in a particular area. You can ask for understanding, get architectural considerations, and have the coder implement changes to perfection.
+![Open Router Ranking](media/open-router-roo-code.png)
+
+Roo Code is a fork of Cline, but has added support for modes, e.g. for coding, as an architect, for asking questions to build understanding. Choosing a mode affects Roo Code's behavior, making it feel like you're working with a colleague specializing in a particular area. You can ask for understanding, get architectural considerations, and have the coder implement changes to perfection. While default modes do a good job, you can also create custom modes — e.g., as a helpful reviewer or tech writer—and specialize them further to focus on specific quality aspects like robustness, performance, or security—important for real-world tasks. Custom modes make it super extendable.
 
 ```mermaid
 graph TD;
@@ -85,8 +87,6 @@ graph TD;
     
     F -->|Example: Generate documentation| G[DocGen Mode];
 ```
-
-While default modes do a good job, you can also create your own—e.g., as a helpful reviewer or tech writer—and specialize them further to focus on specific quality aspects like robustness, performance, or security—important for real-world tasks.
 
 Moreover, Roo Code has an active community with frequent discussions on Discord and regular releases, lowering the time needed between ideation and release of new versions.
 

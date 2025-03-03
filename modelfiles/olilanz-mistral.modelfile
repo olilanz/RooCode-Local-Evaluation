@@ -1,5 +1,5 @@
 
-# llama_model_loader: - kv  15:                       llama.context_length u32              = 32768
+# llama.context_length u32              = 32768
 
 # FROM hf.co/lmstudio-community/Mistral-Small-24B-Instruct-2501-GGUF:Q8_0
 # 31 GB VRAM at 16k context size

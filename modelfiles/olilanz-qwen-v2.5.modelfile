@@ -4,18 +4,31 @@
 # Prompt:
 # I want you to improve maintainability of the Python code in @/inference/gradio_server.py . Organize the imports, and factor the args parsing out into a new file ultils/args.py. Add short documentation on every function to indicate the purpose of the function.
 
-#FROM MHKetbi/Qwen2.5-Coder-32B-Instruct-Roo:q8_0
+# FROM MHKetbi/Qwen2.5-Coder-32B-Instruct-Roo:q8_0
 # 32GB VRAM at 56k context size.
 # 51GB VRAM at 32k context size.
 
-FROM hf.co/lmstudio-community/Qwen2.5-14B-Instruct-1M-GGUF:Q8_0
-# Supports up to 1M context size.
-# 40GB VRAM at 56k context size.
-# PARAMETER num_ctx 57344
+# FROM hf.co/lmstudio-community/Qwen2.5-14B-Instruct-1M-GGUF:Q8_0
+# Supports up to 1M context size. But Ollama has SIG-abort crashes.
+# llm_load_print_meta: n_ctx_train      = 1010000
+# 40GB VRAM at 56k context size. Times out.
 # 36GB VRAM at 48k context size. But crashes !?
-# PARAMETER num_ctx 49125
 # 34GB VRAM at 42k context size. But crashes !?
-PARAMETER num_ctx 43008
 
-#PARAMETER num_ctx 32768
-#PARAMETER num_ctx 65536
+FROM hf.co/lmstudio-community/Qwen2.5-Coder-14B-Instruct-GGUF:Q8_0
+# Supports up to 128k context size. 
+# 43GB VRAM at 64k context size. Times out.
+# 40GB VRAM at 56k context size. Times out.
+# 36GB VRAM at 48k context size. But crashes !?
+
+# FROM hf.co/lmstudio-community/Qwen2.5-Coder-7B-Instruct-GGUF:Q8_0
+# 16GB VRAM at 64k context size. Fails at diff problem. Ends in infinite repeats.
+
+# PARAMETER num_ctx 131072
+# PARAMETER num_ctx 65536
+# PARAMETER num_ctx 57344
+PARAMETER num_ctx 49125
+# PARAMETER num_ctx 43008
+# PARAMETER num_ctx 32768
+
+

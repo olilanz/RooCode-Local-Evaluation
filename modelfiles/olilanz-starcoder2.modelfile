@@ -1,0 +1,18 @@
+FROM starcoder2:15b-instruct
+
+# llm_load_print_meta: n_ctx_train      = 16384
+# llm_load_print_meta: rope type        = 2
+# llm_load_print_meta: rope scaling     = linear
+# llm_load_print_meta: freq_base_train  = 100000.0
+# llm_load_print_meta: freq_scale_train = 1
+# 16k context, but supports rope scaling
+
+# ??GB VRAM, at 16k context size
+# 17GB VRAM, at 32k context size
+# ??GB VRAM, at 56k context size
+
+PARAMETER num_ctx 32768
+#PARAMETER num_ctx 57344
+#PARAMETER num_ctx 65536
+#PARAMETER num_ctx 100000
+#PARAMETER num_ctx 131072
