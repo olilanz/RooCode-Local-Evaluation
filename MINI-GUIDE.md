@@ -57,7 +57,7 @@ Write the complete code to a single index.html file using the write_to_file tool
 
 It may require a few attempts for the model to get this right. Don't hesitate to throw the generated code away if you don't like it, and try again. 
 
-This prompt should generate a fully functional demo that you can load into a browser and enjoy.
+This prompt should generate a fully functional demo that you can load into a browser and enjoy. You can see the code generated on my setup here: [demo code](media/mini-guide.html).
 
 ## Explaining the model file
 

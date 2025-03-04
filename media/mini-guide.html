@@ -1,0 +1,45 @@
+<!-- Load Phaser.js library -->
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.50.1/dist/phaser.min.js"></script>
+
+<!-- Define the game configuration object -->
+<script>
+    var config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: { y: 200 }
+             }
+         },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+         }
+     };
+
+    var game = new Phaser.Game(config);
+    var player;
+
+    function preload()
+    {
+        this.load.image('logo', 'https://phaser.io/images/phaser3-logo.png');
+     }
+
+    function create()
+    {
+        player = this.physics.add.sprite(400, 100, 'logo');
+        player.setBounce(0.2);
+        player.setCollideWorldBounds(true);
+        this.input.keyboard.on('keydown-SPACE', function (event) {
+            player.body.velocity.y = -400;
+         }, this);
+     }
+
+    function update()
+    {
+        
+     }
+</script>
