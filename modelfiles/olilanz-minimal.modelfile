@@ -1,0 +1,23 @@
+# llm_load_print_meta: n_ctx_train      = 16384
+# llm_load_print_meta: rope type        = 0
+# llm_load_print_meta: rope scaling     = linear
+
+FROM deepseek-coder:6.7B-instruct
+# 11GB VRAM, at 12k context size
+# 13GB VRAM, at 14k context size
+# 14GB VRAM, at 16k context size
+# 24GB VRAM, at 32k context size
+
+# FROM deepseek-coder:6.7b-instruct-q8_0
+# 17GB VRAM, at 16k context size
+
+#PARAMETER num_ctx 12288
+#PARAMETER num_ctx 14336
+PARAMETER num_ctx 16384
+#PARAMETER num_ctx 32768
+#PARAMETER num_ctx 57344
+#PARAMETER num_ctx 65536
+#PARAMETER num_ctx 100000
+#PARAMETER num_ctx 131072
+
+PARAMETER num_predict 8192
