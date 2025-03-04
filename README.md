@@ -296,7 +296,7 @@ When determining the optimal context size for your setup, you need to consider w
 
 As Ollama lets you freely define your preferred context size, there is a temptation to just crank that number up to fill up the VRAM. Unfortunately, not all models work reliably with large context sizes. If the model itself was trained with a smaller context size, results can be arbitrary when running the inference tasks with a significantly larger context size. The cpntext size that you configure your model with in Ollama needs to consider the model's original training size. 
 
-When exceeding the trained context size by a factor larger than 1.5 to 2.0, results may start to degrade again. And a high parameter model starts producing poor reults. Things then become notably more inconsistent, and LLM and Roo Code start having a heard time to make progress together. Again like the old couple from before.
+When exceeding the trained context size by a factor larger than 1.5 to 2.0 (depends on the particular model), results may start to degrade again, and a even a high parameter model starts producing poor reults. Things then become notably more inconsistent, and LLM and Roo Code start having a heard time to make progress together. Again like the old couple from before.
 
 ### How to identify the trained context size?
 
@@ -339,22 +339,21 @@ llama_new_context_with_model: n_ctx_per_seq (43008) < n_ctx_train (1010000) -- t
 
 ### Roo Code's system prompt
 
-Now that you have a pretty good grip on alignment of hardware, LLM and context size, it is worth considering how we can make most out of the context we have. Most people will likely not venture into this topic, as it requires a lot of experimentation in order to get right. But when done well, it can easily save you a couple of thousands of tokens in the system prompt, leaving you more psace for your refactoring tasks. 
+Now that you have a pretty good grip on alignment of hardware, LLM and context size, it is worth considering how we can make most out of the context we have. First things first. If you do not use MCP servers, you can disable them in the Roo Code configuration. This will omit all MCP specific instructions from the system prompt, which leads to sicnificant reduction of tokens. To do so, just uncheck the "Enable MCP Servers" checkbox. Removing the MCP related instructions reduced the system prompt for me from 51kb to 33kb:
 
-For doing so, you can use a feature introduced in Roo Code 3.7.8, called "Foot Gun" System Prompting, as announced on [Discord](https://discord.com/channels/1332146336664915968/1332795366218797116/1344781968356933703). You find it in the propt settings, in a advanced section: 
+![No MCP](media/disable-mcp.png)
+
+If you want to go even further with optimiztion, you can use a feature introduced in Roo Code 3.7.8, called "Foot Gun System Prompting", as announced on [Discord](https://discord.com/channels/1332146336664915968/1332795366218797116/1344781968356933703). You find it in the propt settings, in a advanced section: 
 
 ![Foot Gun System Prompt](media/foot-gun.png)
 
-Now, if you click that "Preview System Prompt" button, you can see the elaborate system prompt that Roo Code sends to the LLM in every request, which consumes valuable token space. The prompt caters for all possible features and tool calling - even if you don't use them. So, if you for example do not use AI Agents and MCP services, you can strip that from the system prompt and save about a third of the prompt right there. Removing the MCP related instructions reduced the system prompt for me from 51kb to 33kb. Then removing the automatic mode switching reduced it further to 28kb.
+You can remove instructions related to automated mode switching, which for me reduced the system prompt further to 28kb.
 
-If you want more, you can compress the explanations for tool calling, and thereby by save even more. You may want to have a look at GosuCoder's video, if you want to give it a try:
+If you want more, you can compress the instructions for tool calling, and thereby by save even more. You may want to follow GosuCoder's video, as he seems to be testing how you you can go.  The video has link in the description section, so you can find his current minimalistic system prommpt:
 
 [![Watch the YouTube video](media/gosucoder-foot-gun.png)](https://www.youtube.com/watch?v=mwJx5QI2c0o)
 
-Though, using the Foot Gon System Prompt also means that you will no longer benefit from future system prompt improvements, which come with Roo Code. You will have to maintain the system prompt on your own. The probably more systainable way to deal with it is probably to raise the topic in the Roo Code support forum, and work towards a feature where the Roo Code itself determines whether the prompt can be simplified e.g. when no MCP servers are to be used.
-
-Maybe you can even use Roo Code to genenrate that code for you 😆 
-
+Though, using the Foot Gon System Prompt also means that you will no longer benefit from future system prompt improvements, which come with Roo Code. You will have to maintain the system prompt on your own. Also note that oversimplification of the system prompt may cause the model to malfiunction with Roo Code.
 
 ### So, what is the solution when you put it all together?
 
@@ -562,12 +561,8 @@ But no matter what... Roo Code will be part of my journey.
 
 Here are the things I find worth exlo-ring more:
 
-- Feature: Roo Code is already now building a context-aware system prompt. For example, it embeds folder locations. As MCP support fills a significant amount of context, a low-context mode could make sense for the local use case. In that mode, features like MCP and automatic mode switching would be omitted in the generated system prompt. 
+- Feature: Ollama supports a parameter to limit the length of the output text. The parameter is called max_predict. If this parameter is set to -1 is the output text lenght is unlimited, potentially leading to truncation. If it is -2 the text is configured to fil up the available context. If the number is any positive number, that value with be the limit. As this parameter can also be set via the Ollama API, it would b useful to provide that as configuration, similar to the "Max Output Tokens" configuration in Roo Code's "OpenAI Compatible" provider.
 
 - Bug: During testing I found numerous times that my code files were added multiple times into the prompt. Firstly, directly in my first prompt, as I referenced it. But then again as the model tried to look at the code, it walled the read_file tool to get RooD Code to send the contexnts again. Now, with a 500 LoC file, you can imagine how this quickly filled up my available context. This could indicate an issue with the system prompt.
 
 - Research: Prompt engineering for thinking models... would be interesting to see how chain-of-draft techniques would affect coding performance? Can this lead to lower context-use, and thereby allow for more complex tasks for local coding?
-
-- Feature: Ollama supports a parameter to limit the length of the output text. The parameter is called max_predict. If this parameter is set to -1 is the output text lenght is unlimited, potentially leading to truncation. If it is -2 the text is configured to fil up the available context. If the number is any positive number, that value with be the limit. As this parameter can also be set via the Ollama API, it would b useful to provide that as configuration, similar to the "Max Output Tokens" configuration in Roo Code's "OpenAI Compatible" provider.
-
-So, if anyone caeres to take the lead, that would be super appreciated - as I am off to my next adventure.
