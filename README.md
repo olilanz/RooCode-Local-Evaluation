@@ -189,7 +189,7 @@ For illustration of the prompts and iterations, the structure of the message to 
 
 You see multiple user/assistant interactions - indicating that this is the message at the start of the 3rd iteration.
 
-After the call cpletes, the reply from the LLM, or assistant prompt, is streamed back to Roo Code, one token at a time. Once Roo Code has received all tokens, it parses the message and decides what to do next. The LLM may request a tool call, such as read_file, if it thinks more information contained in a file wasn't provided before. It might ask for changes to be made to a file or a folder to be created. Roo will then ask you whether the request is reasonable and execute it if approved—or configured for auto-approval. The result of the tool call will then be embedded into the context for the next call to the LLM.
+After the call completes, the reply from the LLM, or assistant prompt, is streamed back to Roo Code, one token at a time. Once Roo Code has received all tokens, it parses the message and decides what to do next. The LLM may request a tool call, such as read_file, if it thinks more information contained in a file wasn't provided before. It might ask for changes to be made to a file or a folder to be created. Roo will then ask you whether the request is reasonable and execute it if approved—or configured for auto-approval. The result of the tool call will then be embedded into the context for the next call to the LLM.
 
 ```mermaid
 sequenceDiagram
@@ -226,7 +226,7 @@ But when it comes to more involved tasks, such as "break down class XYZ for main
 
 Two interesting things now happen:
 
-- Minor decisions in early iterations become hard facts as the evolving context builds around everything learned. Incorrect assumptions or imprecise formulations amplify in subsequent iterations, standing indistinctly in the context for the duration of the entire task. If the LLM is not capale of precise interactions with the task at hand, the likelihood of wandering off into a wrong decision path and producing unusable code increases. Roo Code won't likely detect this, leaving you to wonder what happened.
+- Minor decisions in early iterations become hard facts as the evolving context builds around everything learned. Incorrect assumptions or imprecise formulations amplify in subsequent iterations, standing indistinctly in the context for the duration of the entire task. If the LLM is not capable of precise interactions with the task at hand, the likelihood of wandering off into a wrong decision path and producing unusable code increases. Roo Code won't likely detect this, leaving you to wonder what happened.
 
 - With increasing number of iterations, the physical size of the context grows large and eventually outgrows the model's context limitations. When that happens, the model either truncates its response or becomes very loose when considering the provided context. In the best case, Roo Code gets upset and decides to quit the task after a few unsuccessful iterations. In worst case, Roo Code keeps trying to get the model back on track but makes the matter with context size worse in every iteration.
 
@@ -249,7 +249,7 @@ When loading the configured model in Ollama, you can use the following command t
 ollama ps
 ```
 
-For practical application with iterative refactoring of code, it is highly advisable to run 100% on GPU, so you get your responses before you decide to wanter off and do something else insead. 
+For practical application with iterative refactoring of code, it is highly advisable to run 100% on GPU, so you get your responses before you decide to wanter off and do something else instead. 
 
 ### How Many Billions of Parameters do you need?
 
@@ -290,13 +290,13 @@ In my case, with 36GB of VRAM, I see reasonable results with Q8 quantization of 
 
 Context size is the last but probably most important thing to consider. While easy to imagine, it's likely the least trivial to get right. Here's some explanation:
 
-The contex size os measured in number of tokens. Tokens are sequences of bytes that were identified during model training — such as a word, stem, or punctuation. Typically only a few bytes long. 
+The context size os measured in number of tokens. Tokens are sequences of bytes that were identified during model training — such as a word, stem, or punctuation. Typically only a few bytes long. 
 
 When determining the optimal context size for your setup, you need to consider what the context is used for. Firstly, there is the part that is sent to the LLM. But secondly, there is also the LLM's response. So, if the first part becomes too large, the second part will be truncated. This renders the LLM unusable in the use case of Roo Code. 
 
-As Ollama lets you freely define your preferred context size, there is a temptation to just crank that number up to fill up the VRAM. Unfortunately, not all models work reliably with large context sizes. If the model itself was trained with a smaller context size, results can be arbitrary when running the inference tasks with a significantly larger context size. The cpntext size that you configure your model with in Ollama needs to consider the model's original training size. 
+As Ollama lets you freely define your preferred context size, there is a temptation to just crank that number up to fill up the VRAM. Unfortunately, not all models work reliably with large context sizes. If the model itself was trained with a smaller context size, results can be arbitrary when running the inference tasks with a significantly larger context size. The context size that you configure your model with in Ollama needs to consider the model's original training size. 
 
-When exceeding the trained context size by a factor larger than 1.5 to 2.0 (depends on the particular model), results may start to degrade again, and a even a high parameter model starts producing poor reults. Things then become notably more inconsistent, and LLM and Roo Code start having a heard time to make progress together. Again like the old couple from before.
+When exceeding the trained context size by a factor larger than 1.5 to 2.0 (depends on the particular model), results may start to degrade again, and a even a high parameter model starts producing poor results. Things then become notably more inconsistent, and LLM and Roo Code start having a heard time to make progress together. Again like the old couple from before.
 
 ### How to identify the trained context size?
 
@@ -339,27 +339,27 @@ llama_new_context_with_model: n_ctx_per_seq (43008) < n_ctx_train (1010000) -- t
 
 ### Roo Code's system prompt
 
-Now that you have a pretty good grip on alignment of hardware, LLM and context size, it is worth considering how we can make most out of the context we have. First things first. If you do not use MCP servers, you can disable them in the Roo Code configuration. This will omit all MCP specific instructions from the system prompt, which leads to sicnificant reduction of tokens. To do so, just uncheck the "Enable MCP Servers" checkbox. Removing the MCP related instructions reduced the system prompt for me from 51kb to 33kb:
+Now that you have a pretty good grip on alignment of hardware, LLM and context size, it is worth considering how we can make most out of the context we have. First things first. If you do not use MCP servers, you can disable them in the Roo Code configuration. This will omit all MCP specific instructions from the system prompt, which leads to significant reduction of tokens. To do so, just uncheck the "Enable MCP Servers" checkbox. Removing the MCP related instructions reduced the system prompt for me from 51kb to 33kb:
 
 ![No MCP](media/disable-mcp.png)
 
-If you want to go even further with optimiztion, you can use a feature introduced in Roo Code 3.7.8, called "Foot Gun System Prompting", as announced on [Discord](https://discord.com/channels/1332146336664915968/1332795366218797116/1344781968356933703). You find it in the propt settings, in a advanced section: 
+If you want to go even further with optimization, you can use a feature introduced in Roo Code 3.7.8, called "Foot Gun System Prompting", as announced on [Discord](https://discord.com/channels/1332146336664915968/1332795366218797116/1344781968356933703). You find it in the prompt settings, in a advanced section: 
 
 ![Foot Gun System Prompt](media/foot-gun.png)
 
 You can remove instructions related to automated mode switching, which for me reduced the system prompt further to 28kb.
 
-If you want more, you can compress the instructions for tool calling, and thereby by save even more. You may want to follow GosuCoder's video, as he seems to be testing how you you can go.  The video has link in the description section, so you can find his current minimalistic system prommpt:
+If you want more, you can compress the instructions for tool calling, and thereby by save even more. You may want to follow GosuCoder's video, as he seems to be testing how you you can go.  The video has link in the description section, so you can find his current minimalistic system prompt:
 
 [![Watch the YouTube video](media/gosucoder-foot-gun.png)](https://www.youtube.com/watch?v=mwJx5QI2c0o)
 
-Though, using the Foot Gon System Prompt also means that you will no longer benefit from future system prompt improvements, which come with Roo Code. You will have to maintain the system prompt on your own. Also note that oversimplification of the system prompt may cause the model to malfiunction with Roo Code.
+Though, using the Foot Gon System Prompt also means that you will no longer benefit from future system prompt improvements, which come with Roo Code. You will have to maintain the system prompt on your own. Also note that oversimplification of the system prompt may cause the model to malfunction with Roo Code.
 
 ### So, what is the solution when you put it all together?
 
-If your setup works with Roo Code and your local LLM, you are in luck. More likely, it will work for some things, while it will disappoint for others. As the behavior is not really deterministic, you may need to try a few times (belss the folks who made Roo Code's new Ckeck-point feature):
+If your setup works with Roo Code and your local LLM, you are in luck. More likely, it will work for some things, while it will disappoint for others. As the behavior is not really deterministic, you may need to try a few times (bless the folks who made Roo Code's new Check-point feature):
 
-So if your setup struggles, cosider this: 
+So if your setup struggles, consider this: 
 
 - Changing to another model may make sense. But it may well be that the model is just poorly configured. So, if a model seems to work for someone else, but not for you, there might be a good explanation. 
 
@@ -369,7 +369,7 @@ So if your setup struggles, cosider this:
 
 - Consider carefully the context size. Have you been too optimistic, and cranked it all up? Check how the model was trained, and if it performs safely with extended context. 
 
-- Is Roo Code wasting your precious context size? You can resort to the "Foot Gun System Prompt" feature, and reduce Roo Code's systemp prompt to what is strictly necessary for you. 
+- Is Roo Code wasting your precious context size? You can resort to the "Foot Gun System Prompt" feature, and reduce Roo Code's system prompt to what is strictly necessary for you. 
 
 If all that is right, and you still find too much trouble, then it's time to focus on your prompting techniques. 
 
@@ -385,7 +385,7 @@ I rely on pre-owned hardware components collected over the years - with some add
 
 <img src="media/hardware.png" alt="hardware" width="800" height="600">
 
-The bottlenecks are in the PCIe speed as well as both the amont of VRAM, plus the fact that it is divided on two separate GPUs. 
+The bottlenecks are in the PCIe speed as well as both the amount of VRAM, plus the fact that it is divided on two separate GPUs. 
 
 For software, I use Unraid OS because it's lightweight and provides painless support for containerization and virtualization with GPU passthrough. Initially, I ran Windows and Ubuntu on Unraid using QEMU for exploring Ollama, llama.cpp, Pinokio, LocalAI.
 
@@ -414,13 +414,13 @@ PARAMETER num_ctx 32768
 PARAMETER num_predict 12000
 ```
 
-During testing, though I noticed that from time to time portions of the original code file were missing - especially on larger refactorings. Bumping the `num_predict` parameter up to 12000 seemd to fix the problem for me. The issue was that Ollama's default configuration seems to have limited the length of the result message, which caused the code file to be truncated. Adding the parameter to teh model file gave it the length that was needed for my code file.
+During testing, though I noticed that from time to time portions of the original code file were missing - especially on larger refactorings. Bumping the `num_predict` parameter up to 12000 seemed to fix the problem for me. The issue was that Ollama's default configuration seems to have limited the length of the result message, which caused the code file to be truncated. Adding the parameter to teh model file gave it the length that was needed for my code file.
 
 ### Roo Code system prompt
 
-I did infact run into severe limitations with the context, which is why I decided to simplify Roo Code's system prompt. I roughly went through it, and removed all references to MCP servers, as well as anything related to mode switching. This seemed to stabilize the performance significantly. 
+I did in fact run into severe limitations with the context, which is why I decided to simplify Roo Code's system prompt. I roughly went through it, and removed all references to MCP servers, as well as anything related to mode switching. This seemed to stabilize the performance significantly. 
 
-Though I was seeing issues with tool-calling, and the model outputted the refactored code in the assistant prompt, instead actually applying the changes. The following assitions to the system prompt did make it work for a few times. Though, I some more tuning would definitely help making it stable:
+Though I was seeing issues with tool-calling, and the model outputted the refactored code in the assistant prompt, instead actually applying the changes. The following additions to the system prompt did make it work for me. Though, I some more tuning would definitely help making it stable:
 
 
 ```quote
@@ -429,10 +429,9 @@ As you are running in a low-memory configuration it is EXTREMELY important that 
 
 For my task at hend, this was sufficient, though.
 
-
 ### Refactoring task
 
-I used the deepmeepbeep's YeEGP repo for testing, as I still have it lingering around from an earlier experiment: https://github.com/deepbeepmeep
+I used the deepmeepbeep's YeEGP repo for testing, as I think it is such a cool project, and I still have it lingering around from an earlier experiment: https://github.com/deepbeepmeep
 
 I used different prompts at different levels of complexity. Here is a screenshot of the result with the simple, confined prompt: "Simplify the code in @/inference/gradio_server.py without changing the functionality. Don't look in other files. Concentrate on this file only."
 
@@ -559,7 +558,7 @@ Though, for me, that time does not seem to be now. I am making the cacluations o
 
 But no matter what... Roo Code will be part of my journey.
 
-Here are the things I find worth exlo-ring more:
+Here are the things I find worth exploring more from some other time:
 
 - Feature: Ollama supports a parameter to limit the length of the output text. The parameter is called max_predict. If this parameter is set to -1 is the output text lenght is unlimited, potentially leading to truncation. If it is -2 the text is configured to fil up the available context. If the number is any positive number, that value with be the limit. As this parameter can also be set via the Ollama API, it would b useful to provide that as configuration, similar to the "Max Output Tokens" configuration in Roo Code's "OpenAI Compatible" provider.
 
