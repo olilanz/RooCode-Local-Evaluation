@@ -228,7 +228,7 @@ Two interesting things now happen:
 
 - Minor decisions in early iterations become hard facts as the evolving context builds around everything learned. Incorrect assumptions or imprecise formulations amplify in subsequent iterations, standing indistinctly in the context for the duration of the entire task. If the LLM is not capale of precise interactions with the task at hand, the likelihood of wandering off into a wrong decision path and producing unusable code increases. Roo Code won't likely detect this, leaving you to wonder what happened.
 
-- With increasing number of iterations, the physical size of the context grows large and eventually outgrows the model's context limitations. When that happens, the model either truncates its response or becomes very loose when considering the provided context. In the best case, Roo Code gets upset and decides to quit the task after a few unsuccessful iterations. In worst case, Roo Code keeps trying to get the model back on track but makes the matter with context size worse inevery iteration.
+- With increasing number of iterations, the physical size of the context grows large and eventually outgrows the model's context limitations. When that happens, the model either truncates its response or becomes very loose when considering the provided context. In the best case, Roo Code gets upset and decides to quit the task after a few unsuccessful iterations. In worst case, Roo Code keeps trying to get the model back on track but makes the matter with context size worse in every iteration.
 
 In essence, simpler tasks have a higher chance of success. So, to benefit most, find the best possible combination of model, configuration, system prompt, and hardware capabilities for your task. If all parameters are defined, break down tasks for Roo Code into smaller, more manageable pieces.
 
@@ -276,7 +276,7 @@ Next to the context, most VRAM utilization of a loaded model comes from trained 
 
 But for your local inference task, this may be a problem. Here's a quick calculation: if you choose a 24b model with training that fits your needs and run it at 32-bit precision, your model alone will consume `24b * 32bit = 96GB` of VRAM. That amount of VRAM hardly counts as consumer-level hardware - and you have not even included the memory for context yet.
 
-This is where quantization comes in. It lets you reduce the memory footprint, so the model fits into your VRAM while also leaving speace for context. Quantization is the conversion of parameters into smaller, lower-precision data types.
+This is where quantization comes in. It lets you reduce the memory footprint, so the model fits into your VRAM while also leaving space for context. Quantization is the conversion of parameters into smaller, lower-precision data types.
 
 Common quantization is to 16-bit (fp16 or bf16) at half precision — therefore requiring half the space. With low VRAM, you likely need to go even lower than that, for example to 8 bits (Q8), or even further down to Q6, Q5, or Q4. 
 
@@ -312,7 +312,7 @@ The model was trained with a 16k context only. It may perform poorly with a 64k 
 
 Moreover, some models state support for larger contexts — although they have been trained for smaller ones. They apply a technique called RoPE scaling (Rotary Position Embeddings), essentially extrapolating at the expense of precision. Depending on the algorithm, they scale linearly or more precisely in the lower end of the context, and less precisely in the higher end of the context.
 
-You also ovserve the use of ROPE scaling in the Ollama log (with my annotations):
+You also observe the use of ROPE scaling in the Ollama log (with my annotations):
 
 ```log
 llama.context_length	16,384	  # Base trained context length
@@ -356,7 +356,7 @@ Though, using the Foot Gon System Prompt also means that you will no longer bene
 Maybe you can even use Roo Code to genenrate that code for you 😆 
 
 
-### So, what is the solution when you put it all thogether?
+### So, what is the solution when you put it all together?
 
 If your setup works with Roo Code and your local LLM, you are in luck. More likely, it will work for some things, while it will disappoint for others. As the behavior is not really deterministic, you may need to try a few times (belss the folks who made Roo Code's new Ckeck-point feature):
 
@@ -425,7 +425,7 @@ Though I was seeing issues with tool-calling, and the model outputted the refact
 
 
 ```quote
-As you are running in a low-memory configuration it is EXTREMELY important that you do not make large refactoring steps at once. Your output is limited to 12000 tokens. When editing large files, rely ont the aplly_diff tool for avoiding having to handle the entire file at once. Only use the write_file tool if you indeed change the complete file. This will help you stay within the constrained memory. You need to use memory conservatively.
+As you are running in a low-memory configuration it is EXTREMELY important that you do not make large refactoring steps at once. Your output is limited to 12000 tokens. When editing large files, rely ont the apply_diff tool for avoiding having to handle the entire file at once. Only use the write_file tool if you indeed change the complete file. This will help you stay within the constrained memory. You need to use memory conservatively.
 ```
 
 For my task at hend, this was sufficient, though.
