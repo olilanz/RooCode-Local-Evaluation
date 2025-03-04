@@ -10,11 +10,11 @@ Here is a recording of two real-world refactoring tasks with Roo Code against Op
 
 However, with cloud-hosted backends comes a steep cost, as you pay per token. In complex refactoring, you quickly end up with millions of tokens used. This takes the fun out of it quite a bit, e.g., for recreational coding projects.
 
-Luckily, with Roo Code, you can choose the backend and also run against locally hosted LLMs using Ollama. This can save you tons of money if you choose to run it on capable consumer hardware—like your son's gaming PC while he is sweating in school (not that I would ever do that 🫣).
+Luckily, with Roo Code, you can choose the backend and also run against locally hosted LLMs using Ollama. This can save you tons of money if you choose to run it on capable consumer hardware—like your son's gaming PC while he is studying in school (not that I would ever do that 🫣).
 
 But how well does it work? Why is not everybody doing it this way? As I was looking for answers on the internet, I found a lot of information about problems but not much useful guidance for how to overcome them.
 
-GusoCoder published an encouraging video a few weeks ago, which triggered me to give it a spin on my own hardware. I wanted to understand what was going wrong and what we potentially could do to fix it.
+GosuCoder published an encouraging video a few weeks ago, which triggered me to give it a spin on my own hardware. I wanted to understand what was going wrong and what we potentially could do to fix it.
 
 [![Watch the YouTube video](media/local-llm.png)](https://www.youtube.com/watch?v=7sgSBLIb0ho)
 
@@ -22,7 +22,7 @@ In this article, I describe my experiences in the hope of inspiring someone else
 
 ### For the Impatient
 
-Yes, it works! But you need to keep your ambitions a bit lower, as the local setup cannot compete with the cloud-hosted model in speed and quality. Though, if you are willing to put in the time to tune and optimize your setup, you can achieve good results.
+Yes, it works! But you need to keep your ambitions a bit lower, as the local setup cannot compete with the cloud-hosted model in speed and quality. However, if you are willing to put in the time to tune and optimize your setup, you can achieve good results.
 
 Plus... there is an option to choose a hybrid approach, such as hosting Ollama yourself on services like runpod.io, which provide good hourly rates for powerful GPUs. This lets you go absolutely crazy for a few hours without worrying about cost every time you press a button.
 
@@ -40,7 +40,7 @@ It seems that we are at a turning point towards decentralization and democratiza
 
 ### Auto-Coders and Coding Assistants
 
-The software engineering discipline fits very well the description of such a specific area with real-world tasks. In this field, we see several promising products emerging, such as Copilot, Windrurf, Continue, or Roo Code (formerly Roo Cline), making use of Large Language Models (LLMs).
+The software engineering discipline fits very well the description of such a specific area with real-world tasks. In this field, we see several promising products emerging, such as Copilot, Windsurf, Continue, or Roo Code (formerly Roo Cline), making use of Large Language Models (LLMs).
 
 On one hand, there are coding assistants like Copilot, which act more like chat interfaces and provide capable auto-completion. These are rapidly becoming common in a software engineer's toolbox for accelerated code analysis, development, review, and debugging.
 
@@ -71,7 +71,7 @@ Doing this well requires the build-up of large context for achieving the desired
 
 Roo Code is well-established in the community as a super accessible auto-coder that integrates seamlessly into VSCode workflows, such as applying code changes, executing commands directly in the VSCode terminal, integrating with source control, working with diffs, etc. It can be configured to use local models using Ollama and is open-source, allowing us to explore why something works or doesn't and fix it if necessary.
 
-The popularity of Roo Code can be seen e.g. on the Open [Router web site](https://openrouter.ai), which shows a ranked list of applications that are used on their platform. Roo Code ranks behind Cline, with a large gap to SillyTavern: 
+The popularity of Roo Code can be seen e.g. on the Open [Router website](https://openrouter.ai), which shows a ranked list of applications that are used on their platform. Roo Code ranks behind Cline, with a large gap to SillyTavern:
 
 ![Open Router Ranking](media/open-router-roo-code.png)
 
