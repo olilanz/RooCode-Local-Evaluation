@@ -260,7 +260,7 @@ On my setup, model with 8b and 14b provide a good starting point. With 36GB of V
 I can run 24b models, but the available space for context becomes impractically small.
 
 
-### Focussed Training matters - remove the dead waight
+### Focussed Training matters - remove the dead weight
 
 When choosing a model, it's best if the training of the billions of parameters is dedicated to coding tasks. The majority of the training should be done on programming languages. General purpose models carry a lot of dead weight along, which is not useful for programming. Such as how to combine ingredients to make a perfect stew, or the long term effects of deforestation of rain forests. Try to avoid those for best results.
 
@@ -336,7 +336,27 @@ llama_new_context_with_model: freq_base     = 10000000.0
 llama_new_context_with_model: freq_scale    = 1
 llama_new_context_with_model: n_ctx_per_seq (43008) < n_ctx_train (1010000) -- the full capacity of the model will not be utilized
 ```
-### So, what is the solution?
+
+### Roo Code's system prompt
+
+Now that you have a pretty good grip on alignment of hardware, LLM and context size, it is worth considering how we can make most out of the context we have. Most people will likely not venture into this topic, as it requires a lot of experimentation in order to get right. But when done well, it can easily save you a couple of thousands of tokens in the system prompt, leaving you more psace for your refactoring tasks. 
+
+For doing so, you can use a feature introduced in Roo Code 3.7.8, called "Foot Gun" System Prompting, as announced on [Discord](https://discord.com/channels/1332146336664915968/1332795366218797116/1344781968356933703). You find it in the propt settings, in a advanced section: 
+
+![Foot Gun System Prompt](media/foot-gun.png)
+
+Now, if you click that "Preview System Prompt" button, you can see the elaborate system prompt that Roo Code sends to the LLM in every request, which consumes valuable token space. The prompt caters for all possible features and tool calling - even if you don't use them. So, if you for example do not use AI Agents and MCP services, you can strip that from the system prompt and save about a third of the prompt right there. Removing the MCP related instructions reduced the system prompt for me from 51kb to 33kb. Then removing the automatic mode switching reduced it further to 28kb.
+
+If you want more, you can compress the explanations for tool calling, and thereby by save even more. You may want to have a look at GosuCoder's video, if you want to give it a try:
+
+[![Watch the YouTube video](media/gosucoder-foot-gun.png)](https://www.youtube.com/watch?v=mwJx5QI2c0o)
+
+Though, using the Foot Gon System Prompt also means that you will no longer benefit from future system prompt improvements, which come with Roo Code. You will have to maintain the system prompt on your own. The probably more systainable way to deal with it is probably to raise the topic in the Roo Code support forum, and work towards a feature where the Roo Code itself determines whether the prompt can be simplified e.g. when no MCP servers are to be used.
+
+Maybe you can even use Roo Code to genenrate that code for you 😆 
+
+
+### So, what is the solution when you put it all thogether?
 
 If your setup works with Roo Code and your local LLM, you are in luck. More likely, it will work for some things, while it will disappoint for others. As the behavior is not really deterministic, you may need to try a few times (belss the folks who made Roo Code's new Ckeck-point feature):
 
@@ -350,22 +370,25 @@ So if your setup struggles, cosider this:
 
 - Consider carefully the context size. Have you been too optimistic, and cranked it all up? Check how the model was trained, and if it performs safely with extended context. 
 
-If all that is right, and you still find too much trouble, then it's about the prompting. 
+- Is Roo Code wasting your precious context size? You can resort to the "Foot Gun System Prompt" feature, and reduce Roo Code's systemp prompt to what is strictly necessary for you. 
+
+If all that is right, and you still find too much trouble, then it's time to focus on your prompting techniques. 
 
 - Be more specific when asking the Roo Code to do something. Do it in small steps. Keep the tasks confined in a single file, or a single function, so you don't have Roo Code iterate unnecessarily.
 
 And if you still want more, consider the off-topics - like renting a GPU at runpod.io, or find a second GPU to cramp into your box. While this is not as efficient as having one large GPU with tons of VRAM, it is still a viable, cost effective approach to consider.
 
-
 ## Testing in the wild
 
 ### My setup and testing ground
 
-For this investigation, I rely on pre-owned hardware components collected over the years. It's not the most modern setup, but beefy enough for the task, and still representative for a high-end consumer PC. My configuration includes a previous-gen AMD Ryzen 7 CPU, 128GB DDR4 RAM, 2TB NVMe storage, and an RTX 3090 TI on 16xPCIe4. I threw in an additional RTX 3060 on 4xPCIe4, giving me a total of 36GB of VRAM to work with.
+I rely on pre-owned hardware components collected over the years - with some additions that I found online. It's not the most modern setup, but beefy enough for the task, and still representative for a high-end consumer PC. My configuration includes a previous-gen AMD Ryzen 7 CPU, 128GB DDR4 RAM, 2TB NVMe storage, and an RTX 3090 TI on 16xPCIe4. I threw in an additional RTX 3060 on 4xPCIe4, giving me a total of 36GB of VRAM to work with.
 
 <img src="media/hardware.png" alt="hardware" width="800" height="600">
 
-For software, I use Unraid OS because it's lightweight and provides painless support for containerization and virtualization with GPU passthrough. Initially, I ran Windows and Ubuntu on Unraid using QEMU for exploring Ollama, llama.cpp, Pinokio, LocalAI. 
+The bottlenecks are in the PCIe speed as well as both the amont of VRAM, plus the fact that it is divided on two separate GPUs. 
+
+For software, I use Unraid OS because it's lightweight and provides painless support for containerization and virtualization with GPU passthrough. Initially, I ran Windows and Ubuntu on Unraid using QEMU for exploring Ollama, llama.cpp, Pinokio, LocalAI.
 
 <img src="media/unraid.png" alt="unraid" width="800" height="600">
 
@@ -373,72 +396,122 @@ But as I settled on the Ollama idea, I ditched the VMs and run everything in con
 
 Roo Code on the other hand runs on a Mac but with remote development on Unraid. Essentially, no software is installed on the Mac—other than VSCode—all workloads and AI-related processing are delegated to my Unraid server.
 
-### The coding task
+### Model configuration
 
-I have installed Roo Code, pointed it at my Ollama instance, with the following model configuration:
-
-```modelfile
-FROM hf.co/lmstudio-community/Qwen2.5-14B-Instruct-1M-GGUF:Q8_0
-PARAMETER num_ctx 43008
-```
-
-This maxes out my 36GB of VRAM almost entirely, and gives me the joy for a few simple tasks.
+During my tests, I seemed to have best results with Qwen2.5 derivatives and Phi-4. I tested with f16 precision and low contex, as well as with q8, q5 and q4 precisions and large context. Essentially to try to max my GPUs out:
 
 <img src="media/nvtop.png" alt="nvtop" width="800" height="600">
 
-I use the deepmeepbeep's YeEGP repo for testing, as I still have it lingering around from an earlier experiment: https://github.com/deepbeepmeep
+I ended up with the following two configurations that worked reasonably stable: 
 
-And I run Roo Code over it using the following prompt for the coding role:
-
-```quote
-I want you to improve maintainability of the Python code in @/inference/gradio_server.py. Organize the imports, and factor the args parsing out into a new file utils/args.py. Add short documentation on every function to indicate the purpose of the function.
+```modelfile
+FROM qwen2.5-coder:14b-instruct-q8_0
+PARAMETER num_ctx 49125
+PARAMETER num_predict 12000
+```
+```modelfile
+FROM hf.co/lmstudio-community/phi-4-GGUF:Q8_0
+PARAMETER num_ctx 32768
+PARAMETER num_predict 12000
 ```
 
-I could definitely break this down into smaller tasks and make it more specific. But I want to see if this task can be handled. It seems like a fair, real-world thing to do.
+During testing, though I noticed that from time to time portions of the original code file were missing - especially on larger refactorings. Bumping the `num_predict` parameter up to 12000 seemd to fix the problem for me. The issue was that Ollama's default configuration seems to have limited the length of the result message, which caused the code file to be truncated. Adding the parameter to teh model file gave it the length that was needed for my code file.
 
-The task takes several iterations—some intentional, others corrective due to model imprecision—and x minutes to complete. The resulting code is useful and works as intended.
+### Roo Code system prompt
+
+I did infact run into severe limitations with the context, which is why I decided to simplify Roo Code's system prompt. I roughly went through it, and removed all references to MCP servers, as well as anything related to mode switching. This seemed to stabilize the performance significantly. 
+
+Though I was seeing issues with tool-calling, and the model outputted the refactored code in the assistant prompt, instead actually applying the changes. The following assitions to the system prompt did make it work for a few times. Though, I some more tuning would definitely help making it stable:
+
+
+```quote
+As you are running in a low-memory configuration it is EXTREMELY important that you do not make large refactoring steps at once. Your output is limited to 12000 tokens. When editing large files, rely ont the aplly_diff tool for avoiding having to handle the entire file at once. Only use the write_file tool if you indeed change the complete file. This will help you stay within the constrained memory. You need to use memory conservatively.
+```
+
+For my task at hend, this was sufficient, though.
+
+
+### Refactoring task
+
+I used the deepmeepbeep's YeEGP repo for testing, as I still have it lingering around from an earlier experiment: https://github.com/deepbeepmeep
+
+I used different prompts at different levels of complexity. Here is a screenshot of the result with the simple, confined prompt: "Simplify the code in @/inference/gradio_server.py without changing the functionality. Don't look in other files. Concentrate on this file only."
+
+![Refacoring result](media/local-refactoring.png)
+
+This ran for a few minutes, and completed after two iterations. First laying out the plan, and then applying the changes. 
+
+Though, I was seeing random Ollama crashed (sig abort), which indicates a bug in either the model or the Ollama runtime. So, I continued with Phi4 only. 
+
+### Hitting the linits
+
+Now, the task I presented to Roo Code was not a difficult onw, as it was self-contained, and  not external dependencies were to be considered. The task was also very open, so that the LLM would be able to choose its approach. You can see in the screenshot from before before that the model has a good grasp at syntax, and that the interaction with Roo Code works. A few code blocks were moved around, some white spaces removed, a few multi-line blocks were merged into single lines, etc. All reasonable stuff. 
+
+However, as soon as started to be more specific about which functions to re-write for what purpose, the model would start to struggle. Probably because Phi4 is a multi-purose model, and iths 14b parameters at q8 has shown some tradeoffs. 
+
+But what stands out to me is a kind of funny pattern. It is not only the quality of the generated that seems to deteriorate with increased task complexity.Deterioration also hits the stability of the tool-integration. Roo Clode starts more often to disagree with the model, and runs in circles, rejects apply_diff that don't match, while the model sometimes omitts tool calls or assistant promts alltogether.
+
+With all the optimizations in place, the only variable I can use to affect this stability is the task complexity. Keeping the complexity at a level low enough for my setup lets me run refactoring tasks with come confidence.
+
 
 ### Testing different configuration efficiently
 
-The calibration process is time consuming as it requires a lot of trial and error. Here is a short description of the approach I have chosen.
+As teh calibration process for the model parameters was initially time consuming, and involved a lot of trial and error, I am adding a short description of the approach I have chosen.
 
 For keeping track of my models, I create modelfiles in a folder, one for each model I'm testing with. Modelfiles provide the option to work many more paramaters, write comments and store everything safely in version control. In addition to that, I use a small script to rebuild all models when I have made changes. 
 
-Example modelfile with Qwen from Huggingface.co:
+Here is an example of a complete modelfile I ended up with. It inclides a number ofr base models, both from Ollama as well as from Huggingface.co:
 ```modelfile
-# Very promising! Few minor mis-steps, but able to recover and continue.
-# 56k was slow but stable. 48k is fast, but crashed Ollama worker process.
-# Still testing.
+# Very promising! Few minor mis-steps, but able to recover and continue
+# 14b/q8/56k was slow but stale. 48k is fast, but crashed ollama worker process.
 
 # Prompt:
 # I want you to improve maintainability of the Python code in @/inference/gradio_server.py . Organize the imports, and factor the args parsing out into a new file ultils/args.py. Add short documentation on every function to indicate the purpose of the function.
 
-FROM hf.co/lmstudio-community/Qwen2.5-14B-Instruct-1M-GGUF:Q8_0
-# Supports up to 1M context size.
-# 40GB VRAM at 56k context size.
-PARAMETER num_ctx 57344
-# 36GB VRAM at 48k context size. But crashes!?
-PARAMETER num_ctx 49125
-# 34GB VRAM at 42k context size. But crashes!?
-PARAMETER num_ctx 43008
+# FROM MHKetbi/Qwen2.5-Coder-32B-Instruct-Roo:q8_0
+# 63GB VRAM at 56k context size.
+# 51GB VRAM at 32k context size.
 
-# PARAMETER num_ctx 32768
+# FROM hf.co/lmstudio-community/Qwen2.5-14B-Instruct-1M-GGUF:Q8_0
+# Supports up to 1M context size. But Ollama has SIG-abort crashes.
+# llm_load_print_meta: n_ctx_train      = 1010000
+# 40GB VRAM at 56k context size. Times out.
+# 36GB VRAM at 48k context size. But crashes !?
+# 34GB VRAM at 42k context size. But crashes !?
+
+FROM qwen2.5-coder:14b-instruct-q8_0
+# llm_load_print_meta: n_ctx_train      = 32768
+# llm_load_print_meta: rope type        = 2
+# llm_load_print_meta: rope scaling     = linear
+# 36GB VRAM at 48k context size. But crashes !?
+
+# FROM hf.co/lmstudio-community/Qwen2.5-Coder-14B-Instruct-GGUF:Q8_0
+# Supports up to 128k context size. 
+# 43GB VRAM at 64k context size. Times out.
+# 40GB VRAM at 56k context size. Times out.
+# 36GB VRAM at 48k context size. But crashes !?
+
+# FROM hf.co/unsloth/Qwen2.5-Coder-7B-Instruct-GGUF:F16
+# llm_load_print_meta: n_ctx_train      = 32768
+# llm_load_print_meta: rope type        = 2
+# llm_load_print_meta: rope scaling     = linear
+# 18GB VRAM at 32k context size. Loops wrt tool calling.
+# 20GB VRAM at 42k context size.
+
+# FROM hf.co/unsloth/Qwen2.5-Coder-14B-Instruct-GGUF:F16
+# 43GB VRAM at 32k context size. Times out.
+
+# FROM hf.co/lmstudio-community/Qwen2.5-Coder-7B-Instruct-GGUF:Q8_0
+# 16GB VRAM at 64k context size. Fails at diff problem. Ends in infinite repeats.
+
+# PARAMETER num_ctx 131072
 # PARAMETER num_ctx 65536
-```
+# PARAMETER num_ctx 57344
+PARAMETER num_ctx 49125
+# PARAMETER num_ctx 43008
+# PARAMETER num_ctx 32768
 
-Example modelfile with Deepseek R1 from Ollama.org:
-```modelfile
-# Very promising. Though keeps asking without "user_question". 
-# The code is then written into the console instead of the file.
-# As a result, the files were almost empty.
-
-# The model has an engineered context size max context size of 128k. However, it's not sure how well it will perform on the large end.
-
-# With context size 32k, the model uses 36GB of VRAM
-FROM tom_himanen/deepseek-r1-roo-cline-tools:14b
-PARAMETER num_ctx 57344
-
-# FROM tom_himanen/deepseek-r1-roo-cline-tools:8b
+PARAMETER num_predict 12000
 ```
 
 You can get Ollama to download all dependencies and create your own model based on the base model and configured context size:
@@ -477,14 +550,24 @@ for modelfile in "$script_dir"/*.modelfile; do
 
 ## Conclusion
 
-Getting to this point has not been straightforward. Luckily, I am equipped with a healthy amount of curiosity and a high threshold for pain. I could have chosen an easier setup.
+Working though this process has been extremely rewarding to me, as I definitely learned a lot. And I believe that some of the learnings may be useful for other enthusiasts like me. Though, it has also been a bit of a relvelation, as I now start to understand how involved the optimization of such a setup is. On consumer-hardware, the dream of a dependable, truly efficiency-boosting coding companion has to wait for a bit. 
 
-Though, I would never send the code as a pull request, as the model does not pay much attention to existing structures and formatting, and you see code blocks flipping around.
+Though, things develop super fast. And what I have managed to apply here on my own hardware would have been super difficult just a year ago.
 
-All in all, I think I have a setup that works. Through fine-tuning of the system prompt and more carefully wording my instructions, I could probably reach a satisfying state. I am impressed.
+I have great hopes for Roo Code. Similar to how it already now performs with large models on cloud-hosted services, as consumer-hardware and model architectures and training methdos evolve, it might not take much longer until the different parts fall into place to make a local setup on a hardware like mine feasible. 
 
-However, considering the amount of effort it has taken me to make this particular setup and the speed at which new models evolve, the setup likely will need revision. I'm not sure whether I can wholeheartedly recommend that to everyone.
+Though, for me, that time does not seem to be now. I am making the cacluations on whether upgrading my GPUs would be worth it, or whether working with rental GPUs on services like runpod.io would be the better way to go. For now, I have the feeling that exploring this may be the best option. 
 
-In my case, where I like to tinker with tools for recreational purposes, maintaining that setup seems fine. But if I was in it purely for productivity boosts, I am not sure whether I could justify the hardware and time investments at this point.
+But no matter what... Roo Code will be part of my journey.
 
-Taking the hit and using Roo Code with a hosted provider may get you up and running faster and more predictably.
+Here are the things I find worth exlo-ring more:
+
+- Feature: Roo Code is already now building a context-aware system prompt. For example, it embeds folder locations. As MCP support fills a significant amount of context, a low-context mode could make sense for the local use case. In that mode, features like MCP and automatic mode switching would be omitted in the generated system prompt. 
+
+- Bug: During testing I found numerous times that my code files were added multiple times into the prompt. Firstly, directly in my first prompt, as I referenced it. But then again as the model tried to look at the code, it walled the read_file tool to get RooD Code to send the contexnts again. Now, with a 500 LoC file, you can imagine how this quickly filled up my available context. This could indicate an issue with the system prompt.
+
+- Research: Prompt engineering for thinking models... would be interesting to see how chain-of-draft techniques would affect coding performance? Can this lead to lower context-use, and thereby allow for more complex tasks for local coding?
+
+- Feature: Ollama supports a parameter to limit the length of the output text. The parameter is called max_predict. If this parameter is set to -1 is the output text lenght is unlimited, potentially leading to truncation. If it is -2 the text is configured to fil up the available context. If the number is any positive number, that value with be the limit. As this parameter can also be set via the Ollama API, it would b useful to provide that as configuration, similar to the "Max Output Tokens" configuration in Roo Code's "OpenAI Compatible" provider.
+
+So, if anyone caeres to take the lead, that would be super appreciated - as I am off to my next adventure.

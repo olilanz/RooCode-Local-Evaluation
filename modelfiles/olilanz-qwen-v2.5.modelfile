@@ -1,11 +1,11 @@
 # Very promising! Few minor mis-steps, but able to recover and continue
-# 56k was slow but stale. 48k is fast, but crashed ollama worker process.
+# 14b/q8/56k was slow but stale. 48k is fast, but crashed ollama worker process.
 
 # Prompt:
 # I want you to improve maintainability of the Python code in @/inference/gradio_server.py . Organize the imports, and factor the args parsing out into a new file ultils/args.py. Add short documentation on every function to indicate the purpose of the function.
 
 # FROM MHKetbi/Qwen2.5-Coder-32B-Instruct-Roo:q8_0
-# 32GB VRAM at 56k context size.
+# 63GB VRAM at 56k context size.
 # 51GB VRAM at 32k context size.
 
 # FROM hf.co/lmstudio-community/Qwen2.5-14B-Instruct-1M-GGUF:Q8_0
@@ -15,11 +15,27 @@
 # 36GB VRAM at 48k context size. But crashes !?
 # 34GB VRAM at 42k context size. But crashes !?
 
-FROM hf.co/lmstudio-community/Qwen2.5-Coder-14B-Instruct-GGUF:Q8_0
+FROM qwen2.5-coder:14b-instruct-q8_0
+# llm_load_print_meta: n_ctx_train      = 32768
+# llm_load_print_meta: rope type        = 2
+# llm_load_print_meta: rope scaling     = linear
+# 36GB VRAM at 48k context size. But crashes !?
+
+# FROM hf.co/lmstudio-community/Qwen2.5-Coder-14B-Instruct-GGUF:Q8_0
 # Supports up to 128k context size. 
 # 43GB VRAM at 64k context size. Times out.
 # 40GB VRAM at 56k context size. Times out.
 # 36GB VRAM at 48k context size. But crashes !?
+
+# FROM hf.co/unsloth/Qwen2.5-Coder-7B-Instruct-GGUF:F16
+# llm_load_print_meta: n_ctx_train      = 32768
+# llm_load_print_meta: rope type        = 2
+# llm_load_print_meta: rope scaling     = linear
+# 18GB VRAM at 32k context size. Loops wrt tool calling.
+# 20GB VRAM at 42k context size.
+
+# FROM hf.co/unsloth/Qwen2.5-Coder-14B-Instruct-GGUF:F16
+# 43GB VRAM at 32k context size. Times out.
 
 # FROM hf.co/lmstudio-community/Qwen2.5-Coder-7B-Instruct-GGUF:Q8_0
 # 16GB VRAM at 64k context size. Fails at diff problem. Ends in infinite repeats.
@@ -31,4 +47,4 @@ PARAMETER num_ctx 49125
 # PARAMETER num_ctx 43008
 # PARAMETER num_ctx 32768
 
-
+PARAMETER num_predict 12000

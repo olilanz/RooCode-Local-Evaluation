@@ -1,14 +1,19 @@
-FROM hf.co/unsloth/phi-4-GGUF:Q8_0
+#FROM hf.co/unsloth/phi-4-GGUF:Q8_0
 #FROM hf.co/unsloth/phi-4-GGUF:Q5_K_M
 
-#FROM hf.co/lmstudio-community/phi-4-GGUF:Q8_0
+FROM hf.co/lmstudio-community/phi-4-GGUF:Q8_0
 # llm_load_print_meta: n_ctx_train      = 16384
-# probably also becomes unreliable on large context sizes   
-# 15GB VRAM, at 16k context size
-# 34GB VRAM, at 56k context size
+# llm_load_print_meta: rope type        = 2
+# llm_load_print_meta: rope scaling     = linear
+#llama_new_context_with_model: n_ctx_pre_seq (32768) > n_ctx_train (16384) -- possible training context overflow
+# 44GB VRAM, at 56k context size
+# 32GB VRAM, at 32k context size
 
-#PARAMETER num_ctx 32768
-PARAMETER num_ctx 57344
+PARAMETER num_ctx 32768
+#PARAMETER num_ctx 57344
+#PARAMETER num_ctx 49125
 #PARAMETER num_ctx 65536
 #PARAMETER num_ctx 100000
 #PARAMETER num_ctx 131072
+
+PARAMETER num_predict 12000
