@@ -71,7 +71,7 @@ Doing this well requires the build-up of large context for achieving the desired
 
 Roo Code is well-established in the community as a super accessible auto-coder that integrates seamlessly into VSCode workflows, such as applying code changes, executing commands directly in the VSCode terminal, integrating with source control, working with diffs, etc. It can be configured to use local models using Ollama and is open-source, allowing us to explore why something works or doesn't and fix it if necessary.
 
-The popularity of Roo Code can be seen e.g. on the Open [Router website](https://openrouter.ai), which shows a ranked list of applications that are used on their platform. Roo Code ranks behind Cline, with a large gap to SillyTavern:
+The popularity of Roo Code can be seen e.g. on the [Open Router website](https://openrouter.ai), which shows a ranked list of applications that are used on their platform. Roo Code ranks behind Cline, with a large gap to SillyTavern:
 
 ![Open Router Ranking](media/open-router-roo-code.png)
 
@@ -353,7 +353,7 @@ If you want more, you can compress the instructions for tool calling, and thereb
 
 [![Watch the YouTube video](media/gosucoder-foot-gun.png)](https://www.youtube.com/watch?v=mwJx5QI2c0o)
 
-Though, using the Foot Gon System Prompt also means that you will no longer benefit from future system prompt improvements, which come with Roo Code. You will have to maintain the system prompt on your own. Also note that oversimplification of the system prompt may cause the model to malfunction with Roo Code.
+Though, using the Foot Gun System Prompt also means that you will no longer benefit from future system prompt improvements, which come with Roo Code. You will have to maintain the system prompt on your own. Also note that oversimplification of the system prompt may cause the model to malfunction with Roo Code.
 
 ### So, what is the solution when you put it all together?
 
