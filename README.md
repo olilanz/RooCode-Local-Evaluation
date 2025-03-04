@@ -187,7 +187,7 @@ For illustration of the prompts and iterations, the structure of the message to 
 }
 ```
 
-You see multiple user/assistant interactions - indicating that this is the message at the start of teh 3rd iteration. 
+You see multiple user/assistant interactions - indicating that this is the message at the start of the 3rd iteration.
 
 After the call cpletes, the reply from the LLM, or assistant prompt, is streamed back to Roo Code, one token at a time. Once Roo Code has received all tokens, it parses the message and decides what to do next. The LLM may request a tool call, such as read_file, if it thinks more information contained in a file wasn't provided before. It might ask for changes to be made to a file or a folder to be created. Roo will then ask you whether the request is reasonable and execute it if approved—or configured for auto-approval. The result of the tool call will then be embedded into the context for the next call to the LLM.
 
@@ -550,7 +550,7 @@ for modelfile in "$script_dir"/*.modelfile; do
 
 ## Conclusion
 
-Working though this process has been extremely rewarding to me, as I definitely learned a lot. And I believe that some of the learnings may be useful for other enthusiasts like me. Though, it has also been a bit of a relvelation, as I now start to understand how involved the optimization of such a setup is. On consumer-hardware, the dream of a dependable, truly efficiency-boosting coding companion has to wait for a bit. 
+Working through this process has been extremely rewarding to me, as I definitely learned a lot. And I believe that some of the learnings may be useful for other enthusiasts like me. Though, it has also been a bit of a relvelation, as I now start to understand how involved the optimization of such a setup is. On consumer-hardware, the dream of a dependable, truly efficiency-boosting coding companion has to wait for a bit. 
 
 Though, things develop super fast. And what I have managed to apply here on my own hardware would have been super difficult just a year ago.
 
