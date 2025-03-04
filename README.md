@@ -94,7 +94,7 @@ This combination makes Roo Code stand out to me as a versatile tool that I belie
 
 ## Identifying the Problem
 
-### Fast, Cheap, and at Top Quality
+### Balancing Speed, Cost, and Quality in Local LLMs
 
 If you choose to run your LLM on consumer hardware, as opposed to cloud-hosted services, you run into constraints that you will need to balance. If you wouldn't care that a task completes first after 14 hours, you can run the most powerful LLM against your codebase. But if you want a more interactive way of working, you will need to sacrifice model capabilities instead.
 
