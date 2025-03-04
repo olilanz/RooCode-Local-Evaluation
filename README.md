@@ -397,7 +397,7 @@ Roo Code on the other hand runs on a Mac but with remote development on Unraid. 
 
 ### Model configuration
 
-During my tests, I seemed to have best results with Qwen2.5 derivatives and Phi-4. I tested with f16 precision and low contex, as well as with q8, q5 and q4 precisions and large context. Essentially to try to max my GPUs out:
+During my tests, I seemed to have best results with Qwen2.5 derivatives and Phi-4. I tested with f16 precision and low context, as well as with q8, q5 and q4 precisions and large context. Essentially to try to max my GPUs out:
 
 <img src="media/nvtop.png" alt="nvtop" width="800" height="600">
 
@@ -435,19 +435,19 @@ I used the deepmeepbeep's YeEGP repo for testing, as I think it is such a cool p
 
 I used different prompts at different levels of complexity. Here is a screenshot of the result with the simple, confined prompt: "Simplify the code in @/inference/gradio_server.py without changing the functionality. Don't look in other files. Concentrate on this file only."
 
-![Refacoring result](media/local-refactoring.png)
+![Refactoring result](media/local-refactoring.png)
 
 This ran for a few minutes, and completed after two iterations. First laying out the plan, and then applying the changes. 
 
 Though, I was seeing random Ollama crashed (sig abort), which indicates a bug in either the model or the Ollama runtime. So, I continued with Phi4 only. 
 
-### Hitting the linits
+### Hitting the limits
 
 Now, the task I presented to Roo Code was not a difficult onw, as it was self-contained, and  not external dependencies were to be considered. The task was also very open, so that the LLM would be able to choose its approach. You can see in the screenshot from before before that the model has a good grasp at syntax, and that the interaction with Roo Code works. A few code blocks were moved around, some white spaces removed, a few multi-line blocks were merged into single lines, etc. All reasonable stuff. 
 
-However, as soon as started to be more specific about which functions to re-write for what purpose, the model would start to struggle. Probably because Phi4 is a multi-purose model, and iths 14b parameters at q8 has shown some tradeoffs. 
+However, as soon as started to be more specific about which functions to re-write for what purpose, the model would start to struggle. Probably because Phi4 is a multi-purpose model, and its 14b parameters at q8 has shown some tradeoffs. 
 
-But what stands out to me is a kind of funny pattern. It is not only the quality of the generated that seems to deteriorate with increased task complexity.Deterioration also hits the stability of the tool-integration. Roo Clode starts more often to disagree with the model, and runs in circles, rejects apply_diff that don't match, while the model sometimes omitts tool calls or assistant promts alltogether.
+But what stands out to me is a kind of funny pattern. It is not only the quality of the generated that seems to deteriorate with increased task complexity.Deterioration also hits the stability of the tool-integration. Roo Code starts more often to disagree with the model, and runs in circles, rejects apply_diff that don't match, while the model sometimes omits tool calls or assistant prompts altogether.
 
 With all the optimizations in place, the only variable I can use to affect this stability is the task complexity. Keeping the complexity at a level low enough for my setup lets me run refactoring tasks with come confidence.
 
