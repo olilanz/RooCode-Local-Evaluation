@@ -59,6 +59,14 @@ It may require a few attempts for the model to get this right. Don't hesitate to
 
 This prompt should generate a fully functional demo that you can load into a browser and enjoy. You can see the code generated on my setup here: [demo code](media/mini-guide.html).
 
+## Explaining the prompt
+
+The prompt is super specific. The version 3.50 of Phaser.js so that the model does not start referencing versions that don't exist. I am also specifying the public CDN, so that there is no assumption that the Phaser.js library is located in the same folder as the generated file.
+
+Now, the tool calling part in the prompt is usually not necessary. But with the low context size, and the low resolution of the model, the output often does not end as generated code in a file, but is instead just printed explanation in Roo Code's chat window. Identifying the tool explicitly, solved that problem. 
+
+And finally, the CDATA part seemed necessary, as the well-intended model tries to follow Roo Code's system prompt, where tool usage is explained to require XML syntax. The model then tries to protect the generated code by wrapping it into CDATA tag. The prompt is crafted to make it explicit that this is not desired.
+
 ## Explaining the model file
 
 The parameters in the model file have been selected super conservatively, so that code generation completes within 1 or 2 minutes, even with less than 12 GB VRAM. If you have 8GB or less, the waiting time wil be a bit longer.
