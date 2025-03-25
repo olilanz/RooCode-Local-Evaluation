@@ -1,4 +1,5 @@
-FROM starcoder2:15b-instruct
+# FROM starcoder2:15b-instruct - this model is the same as 15b-instruct-q4_0
+FROM starcoder2:15b-instruct-v0.1-q5_K_M
 
 # llm_load_print_meta: n_ctx_train      = 16384
 # llm_load_print_meta: rope type        = 2
@@ -7,11 +8,13 @@ FROM starcoder2:15b-instruct
 # llm_load_print_meta: freq_scale_train = 1
 # 16k context, but supports rope scaling
 
-# ??GB VRAM, at 16k context size
-# 17GB VRAM, at 32k context size
-# ??GB VRAM, at 56k context size
+# 26GB VRAM, at 32k context size
+# 33GB VRAM, at 48k context size
 
-PARAMETER num_ctx 32768
+# careful! Trained context overflow!
+
+#PARAMETER num_ctx 32768
+PARAMETER num_ctx 49125
 #PARAMETER num_ctx 57344
 #PARAMETER num_ctx 65536
 #PARAMETER num_ctx 100000

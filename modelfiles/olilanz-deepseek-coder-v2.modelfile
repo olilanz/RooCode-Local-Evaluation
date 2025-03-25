@@ -1,17 +1,14 @@
-# Good combo. 32GB VRAM, Reasonable refactoring.
-# Seems to be hanging some times.
-# LLM does not always generate assistant prompt. 
 
-FROM hf.co/tensorblock/deepseek-coder-6.7b-base-GGUF:Q8_0
+FROM deepseek-coder-v2:16b-lite-base-q6_K
 
 # llama.context_length	16,384	Base trained context length
 # llama.rope.dimension_count	128	RoPE position encoding size
 # llama.rope.scaling.type	linear	Uses linear RoPE scaling for extended context
 # llama.rope.scaling.factor	4.0	Suggests it was extrapolated to 4× its trained length (16K × 4 = 64K)
 
-# 55GB VRAM, at 64k context size
-# 50GB VRAM, at 56k context size
-# 32GB VRAM, at 32k context size
+# ??GB VRAM, at 64k context size
+# ??GB VRAM, at 56k context size
+# ??GB VRAM, at 32k context size
 
 PARAMETER num_ctx 32768
 #PARAMETER num_ctx 57344
