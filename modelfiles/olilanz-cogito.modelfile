@@ -1,19 +1,21 @@
-FROM gemma3:12b-it-q8_0
+FROM cogito:14b
 
+# print_info: arch             = qwen2
 # print_info: n_ctx_train      = 131072
-# print_info: pooling type     = 0
 # print_info: rope type        = 2
 # print_info: rope scaling     = linear
+# print_info: n_ctx_orig_yarn  = 131072
 
 # ?GB VRAM, at 128k context size
-# ?GB VRAM, at 64k context size
-# 40GB VRAM, at 48k context size
+# 37GB VRAM, at 64k context size
+# 33GB VRAM, at 56k context size
+# 30GB VRAM, at 48k context size
 # ?GB VRAM, at 42k context size
 # ?GB VRAM, at 32k context size
 
 # PARAMETER num_ctx 131072
-# PARAMETER num_ctx 65536
+PARAMETER num_ctx 65536
 # PARAMETER num_ctx 57344
 # PARAMETER num_ctx 49125
-PARAMETER num_ctx 43008
+# PARAMETER num_ctx 43008
 # PARAMETER num_ctx 32768
