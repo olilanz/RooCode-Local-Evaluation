@@ -189,7 +189,7 @@ For illustration of the prompts and iterations, the structure of the message to 
 
 You see multiple user/assistant interactions - indicating that this is the message at the start of the 3rd iteration.
 
-After the call completes, the reply from the LLM, or assistant prompt, is streamed back to Roo Code, one token at a time. Once Roo Code has received all tokens, it parses the message and decides what to do next. The LLM may request a tool call, such as read_file, if it thinks more information contained in a file wasn't provided before. It might ask for changes to be made to a file or a folder to be created. Roo will then ask you whether the request is reasonable and execute it if approved—or configured for auto-approval. The result of the tool call will then be embedded into the context for the next call to the LLM.
+After the call completes, the reply from the LLM, or assistant prompt, is streamed back to Roo Code, one token at a time. Once Roo Code has received all tokens, it parses the message and decides what to do next. The LLM may request a tool call, such as read_file, if it thinks more information contained in a file wasn't provided . It might ask for changes to be made to a file or a folder to be created. Roo will then ask you whether the request is reasonable and execute it if approved—or configured for auto-approval. The result of the tool call will then be embedded into the context for the next call to the LLM.
 
 ```mermaid
 sequenceDiagram
@@ -249,7 +249,7 @@ When loading the configured model in Ollama, you can use the following command t
 ollama ps
 ```
 
-For practical application with iterative refactoring of code, it is highly advisable to run 100% on GPU, so you get your responses before you decide to wanter off and do something else instead. 
+For practical application with iterative refactoring of code, it is highly advisable to run 100% on GPU, so you get your responses  you decide to wanter off and do something else instead. 
 
 ### How Many Billions of Parameters do you need?
 
@@ -296,7 +296,7 @@ When determining the optimal context size for your setup, you need to consider w
 
 As Ollama lets you freely define your preferred context size, there is a temptation to just crank that number up to fill up the VRAM. Unfortunately, not all models work reliably with large context sizes. If the model itself was trained with a smaller context size, results can be arbitrary when running the inference tasks with a significantly larger context size. The context size that you configure your model with in Ollama needs to consider the model's original training size. 
 
-When exceeding the trained context size by a factor larger than 1.5 to 2.0 (depends on the particular model), results may start to degrade again, and a even a high parameter model starts producing poor results. Things then become notably more inconsistent, and LLM and Roo Code start having a heard time to make progress together. Again like the old couple from before.
+When exceeding the trained context size by a factor larger than 1.5 to 2.0 (depends on the particular model), results may start to degrade again, and a even a high parameter model starts producing poor results. Things then become notably more inconsistent, and LLM and Roo Code start having a heard time to make progress together. Again like the old couple from .
 
 ### How to identify the trained context size?
 
