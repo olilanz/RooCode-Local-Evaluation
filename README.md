@@ -443,7 +443,7 @@ Though, I was seeing random Ollama crashed (sig abort), which indicates a bug in
 
 ### Hitting the limits
 
-Now, the task I presented to Roo Code was not a difficult onw, as it was self-contained, and  not external dependencies were to be considered. The task was also very open, so that the LLM would be able to choose its approach. You can see in the screenshot from before before that the model has a good grasp at syntax, and that the interaction with Roo Code works. A few code blocks were moved around, some white spaces removed, a few multi-line blocks were merged into single lines, etc. All reasonable stuff. 
+Now, the task I presented to Roo Code was not a difficult own, as it was self-contained, and  not external dependencies were to be considered. The task was also very open, so that the LLM would be able to choose its approach. You can see in the screenshot from before that the model has a good grasp at syntax, and that the interaction with Roo Code works. A few code blocks were moved around, some white spaces removed, a few multi-line blocks were merged into single lines, etc. All reasonable stuff. 
 
 However, as soon as started to be more specific about which functions to re-write for what purpose, the model would start to struggle. Probably because Phi4 is a multi-purpose model, and its 14b parameters at q8 has shown some tradeoffs. 
 
@@ -454,7 +454,7 @@ With all the optimizations in place, the only variable I can use to affect this 
 
 ### Testing different configuration efficiently
 
-As teh calibration process for the model parameters was initially time consuming, and involved a lot of trial and error, I am adding a short description of the approach I have chosen.
+As the calibration process for the model parameters was initially time consuming, and involved a lot of trial and error, I am adding a short description of the approach I have chosen.
 
 For keeping track of my models, I create modelfiles in a folder, one for each model I'm testing with. Modelfiles provide the option to work many more paramaters, write comments and store everything safely in version control. In addition to that, I use a small script to rebuild all models when I have made changes. 
 
