@@ -63,7 +63,7 @@ flowchart TD
     style D fill:#90ee90,stroke:#000
 ```
 
-More often than not, software engineers work with existing codebases where years of thought have gone into producing the desired outcome concerning functionality, performance, security, robustness, or maintainability. To autonomously complete a refactoring task satisfactorily, the auto-coder needs to infer from existing code the structure, intent, and quality aspects before coming up with a reasonable plan for making changes.
+More often than not, software engineers work with existing codebases where years of thought have gone into producing the desired outcome concerning functionality, performance, security, robustness, or maintainability. To autonomously complete a refactoring task satisfactorily, the auto-coder needs to infer from existing code the structure, intent, and quality aspects  coming up with a reasonable plan for making changes.
 
 Doing this well requires the build-up of large context for achieving the desired result. Auto-coders must manage this context and help the model to iteratively refine the understanding, call tools for knowledge acquisition, and apply changes to the actual codebase. This more involved workflow is what sets auto-coders apart from simple coding assistants.
 
@@ -443,7 +443,7 @@ Though, I was seeing random Ollama crashed (sig abort), which indicates a bug in
 
 ### Hitting the limits
 
-Now, the task I presented to Roo Code was not a difficult onw, as it was self-contained, and  not external dependencies were to be considered. The task was also very open, so that the LLM would be able to choose its approach. You can see in the screenshot from before before that the model has a good grasp at syntax, and that the interaction with Roo Code works. A few code blocks were moved around, some white spaces removed, a few multi-line blocks were merged into single lines, etc. All reasonable stuff. 
+Now, the task I presented to Roo Code was not a difficult one, as it was self-contained, and  not external dependencies were to be considered. The task was also very open, so that the LLM would be able to choose its approach. You can see in the screenshot from before that the model has a good grasp at syntax, and that the interaction with Roo Code works. A few code blocks were moved around, some white spaces removed, a few multi-line blocks were merged into single lines, etc. All reasonable stuff. 
 
 However, as soon as started to be more specific about which functions to re-write for what purpose, the model would start to struggle. Probably because Phi4 is a multi-purpose model, and its 14b parameters at q8 has shown some tradeoffs. 
 
@@ -454,7 +454,7 @@ With all the optimizations in place, the only variable I can use to affect this 
 
 ### Testing different configuration efficiently
 
-As teh calibration process for the model parameters was initially time consuming, and involved a lot of trial and error, I am adding a short description of the approach I have chosen.
+As the calibration process for the model parameters was initially time consuming, and involved a lot of trial and error, I am adding a short description of the approach I have chosen.
 
 For keeping track of my models, I create modelfiles in a folder, one for each model I'm testing with. Modelfiles provide the option to work many more paramaters, write comments and store everything safely in version control. In addition to that, I use a small script to rebuild all models when I have made changes. 
 
